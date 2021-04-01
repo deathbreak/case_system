@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>司法证据管理系统</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" th:href="@{/js/layui/css/layui.css}" media="all">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+<div class="layui-container">
+    <div class="admin-login-background">
+        <div class="layui-form login-form">
+            <form class="layui-form" action="#" th:action="@{/login}" method="post">
+                <div class="layui-form-item logo-title">
+                    <h1>司法证据管理系统登录</h1>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-icon layui-icon-username" for="username"></label>
+                    <input type="text" id="username" name="username" value="" th:value="${user!=null?user.username:''}" lay-verify="required|account" placeholder="用户" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-icon layui-icon-password" for="password"></label>
+                    <input type="password" id="password" name="password" value="" th:value="${user!=null?user.password:''}" lay-verify="required|password" placeholder="密码" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-item">
+                    <input type="checkbox" name="login_route" id="login_route" value="true" lay-skin="primary" title="普通用户登录" checked>
+                    <a href="#" class="layui-form-mid layui-word-aux layui-layout-right">新用户注册</a>
+                </div>
+                <div class="layui-form-item">
+                    <button class="layui-btn layui-btn layui-btn-normal layui-btn-fluid" type="submit">登 录</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" id="msg" th:value="${msg}"/>
+<script th:src="@{/js/jquery.js}" charset="utf-8"></script>
+<script th:src="@{/js/layui/layui.js}" charset="utf-8"></script>
+<script th:src="@{/js/jquery.particleground.min.js}" charset="utf-8"></script>
+<script type="text/javascript">
+    layui.use(['form'], function () {
+        var form = layui.form,
+            layer = layui.layer;
+
+        // 登录过期的时候，跳出ifram框架
+        if (top.location != self.location) top.location = self.location;
+
+        // 粒子线条背景
+        $(document).ready(function(){
+            $('.layui-container').particleground({
+                dotColor:'#7ec7fd',
+                lineColor:'#7ec7fd'
+            });
+        });
+    });
+    $(".layui-form-item").on("click",".layui-unselect.layui-form-checkbox",function(){
+        var flag = $(".layui-unselect.layui-form-checkbox").find("span").text();
+        if(flag=="普通用户登录"){
+            $(".layui-unselect.layui-form-checkbox").find("span").text("管理员登录")
+        }else{
+            $(".layui-unselect.layui-form-checkbox").find("span").text("普通用户登录")
+        }
+    });
+    layui.use('layer', function(){
+        var layer = layui.layer;
+        var msg = $("#msg").val();
+        if(msg != null && msg != "") {
+            layer.msg($("#msg").val());
+        }
+    });
+</script>
+</body>
+</html>

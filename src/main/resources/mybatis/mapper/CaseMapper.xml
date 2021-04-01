@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.abc.case_system.dao.CaseMapper">
+    <select id="CountCaseByCaseId" resultType="java.lang.Integer">
+            select count(*) from `case` where `caseid` = #{caseid}
+        </select>
+    <select id="CountCase" resultType="java.lang.Integer">
+            select count(*) from `case`
+        </select>
+    <insert id="InputCase" parameterType="Casecheck">
+		insert into `case`(`caseid`,`casetime`,`casename`,`caseinfo`,`casepeople`,`casestatus`,`casenote`)values(#{caseid},#{casetime},#{casename},#{caseinfo},#{casepeople},#{casestatus},#{casenote})
+		</insert>
+    <select id="GetAllCase" resultType="Case">
+            select * from `case`
+        </select>
+    <select id="QueryByIdCardAndCaseId" resultType="Case">
+				select * from `case` where `casepeople` like "%"#{str}"%" or `caseid` like "%"#{str}"%"
+		</select>
+    <select id="CountQueryByIdCardAndCaseId" resultType="java.lang.Integer">
+				select count(*) from `case` where `casepeople` like "%"#{str}"%" or `caseid` like "%"#{str}"%"
+		</select>
+    <update id="UpdateCaseInfo" parameterType="Case">
+			update `case` set `casename`=#{casename},`caseinfo`=#{caseinfo},`casestatus`=#{casestatus},`casenote`=#{casenote} where `caseid`=#{caseid}
+			</update>
+<!--    <select id="QueryByCaseid" resultType="Case">-->
+<!--				select * from `case` where `caseid` like "%"#{caseid}"%"-->
+<!--		</select>-->
+<!--    <select id="CountQueryByCaseid" resultType="java.lang.Integer">-->
+<!--				select * from `case` where `caseid` like "%"#{caseid}"%"-->
+<!--		</select>-->
+</mapper>

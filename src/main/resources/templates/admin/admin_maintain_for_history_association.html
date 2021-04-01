@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <title>历史关联维护</title>
+    <footer th:replace="~{common/nav_admin :: admin_head}"></footer>
+
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <footer th:replace="~{common/nav_admin :: admin_header_nav}"></footer>
+    <footer th:replace="~{common/nav_admin :: admin_side_nav}"></footer>
+
+    <div class="layui-body">
+        <div style="padding: 15px;">历史关联维护</div>
+    </div>
+
+    <footer th:replace="~{common/nav_admin :: admin_footer}"></footer>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $("#admin_b").addClass("layui-nav-itemed");
+        $("#admin_b2").addClass("layui-this");
+    });
+    layui.use('element', function () {
+        // var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        // element.on('nav(demo)', function (elem) {
+        //     layer.msg(elem.text());
+        // });
+    });
+    layui.use('layer', function () {
+
+    });
+</script>
+</body>
+</html>

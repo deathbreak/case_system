@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <title>司法证据管理系统</title>
+
+    <footer th:fragment="user_head">
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta http-equiv="Access-Control-Allow-Origin" content="*">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="format-detection" content="telephone=no">
+        <link rel="stylesheet" th:href="@{/js/layui/css/layui.css}" media="all">
+        <link rel="stylesheet" th:href="@{/css/nav_admin.css}" media="all">
+        <style>
+            .layui-nav-tree {
+                vertical-align: top;
+            }
+        </style>
+        <script th:src="@{/js/jquery.js}" charset="utf-8"></script>
+        <script th:src="@{/js/layer/layer.js}"></script>
+        <script th:src="@{/js/laydate/laydate.js}"></script>
+        <script th:src="@{/js/layui/layui.js}" charset="utf-8"></script>
+    </footer>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <footer th:fragment="user_header_nav">
+        <div class="layui-header header header-demo" spring>
+            <div class="layui-main">
+                <a class="logo" th:href="@{/user_index}">
+                    <img th:src="@{/images/logo.png}" alt="司法证据管理系统">
+                </a>
+                <div class="layui-form component" lay-filter="LAY-site-header-component"></div>
+                <ul class="layui-nav">
+<!--                    <li class="layui-nav-item">-->
+<!--                        <input type="text" id="search_input" name="search" value="" placeholder="搜索...."-->
+<!--                               autocomplete="off"-->
+<!--                               class="layui-input layui-input-search">-->
+<!--                    </li>-->
+<!--                    <li class="layui-nav-item">-->
+<!--                        <button type="button" id="search_btn" class="layui-btn layui-btn-normal layui-btn-sm"><i-->
+<!--                                class="layui-icon">&#xe615;</i></button>-->
+<!--                    </li>-->
+                    <li class="layui-nav-item">
+                        <div th:switch="${session.login.getRole()}">
+                            <p th:case="0" th:text="|用户${session.login.username}|"></p>
+                            <p th:case="1" th:text="|管理员${session.login.username}|"></p>
+                            <p th:case="*">异常用户</p>
+                        </div>
+                    </li>
+                    <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                        <a href="/" target="_blank">退出</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <footer th:fragment="user_side_nav">
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <ul class="layui-nav layui-nav-tree site-demo-nav" lay-filter="demo">
+                    <li class="layui-nav-item" id="user_a">
+                        <a href="javascript:;">录入证据</a>
+                        <dl class="layui-nav-child">
+                            <dd id="user_a1"><a th:href="@{/user_input_evidence}">新增证据</a></dd>
+                            <dd id="user_a2"><a th:href="@{/user_return_correlation}">退回关联处理</a></dd>
+                            <dd id="user_a3"><a th:href="@{/user_apply_evidence_correlation}">申请证据关联</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item" id="user_b">
+                        <a href="javascript:;">证据维护</a>
+                        <dl class="layui-nav-child">
+                            <dd id="user_b1"><a th:href="@{/user_maintain_for_input_evidence}">录入证据管理</a></dd>
+                            <dd id="user_b2"><a th:href="@{/user_return_maintain_evidence}">退回维护处理</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item" id="user_c">
+                        <a href="javascript:;">用户录入证据管理</a>
+                        <dl class="layui-nav-child">
+                            <dd id="user_c1"><a th:href="@{/user_query_evidence}">录入证据查询</a></dd>
+                            <dd id="user_c2"><a th:href="@{/user_maintain_for_correlation}">证据维护关联</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item" style="height: 30px; text-align: center"></li>
+                </ul>
+
+            </div>
+
+        </div>
+    </footer>
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">内容主体区域</div>
+    </div>
+
+    <footer th:fragment="user_footer">
+        <div class="layui-footer">
+            <!-- 底部固定区域 -->
+            © xxx版权所有 - 司法证据管理系统
+        </div>
+    </footer>
+</div>
+<script type="text/javascript">
+    layui.use('element', function () {
+
+    });
+    layui.use('layer', function () {
+
+    });
+</script>
+</body>
+</html>

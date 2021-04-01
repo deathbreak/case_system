@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.abc.case_system.dao.CasecheckMapper">
+    <select id="CountCasecheck" resultType="java.lang.Integer">
+            select count(*) from `casecheck`
+        </select>
+    <select id="GetAllCasecheck" resultType="Casecheck">
+            select * from `casecheck`
+        </select>
+    <!--    <select id="GetAllSystemcase" resultType="Systemcase">-->
+    <!--            select * from `systemcase` where `casecheckstatus`=#{casecheckstatus}-->
+    <!--        </select>-->
+    <update id="UpdateSysCase" parameterType="Systemcase">
+			update `systemcase` set `casename`=#{casename},`caseinfo`=#{caseinfo},`casestatus`=#{casestatus},`casenote`=#{casenote} where `caseid`=#{caseid}
+		</update>
+    <update id="UpdateInputCase" parameterType="Systemcase">
+			update `casecheck` set `casename`=#{casename},`caseinfo`=#{caseinfo},`casestatus`=#{casestatus},`casenote`=#{casenote} where `caseid`=#{caseid}
+			</update>
+    <delete id="DelInputcase">
+			delete from `casecheck` where `caseid` = #{caseid}
+		</delete>
+    <select id="CountCaseCheckByCaseId" resultType="java.lang.Integer">
+            select count(*) from `casecheck` where `caseid` = #{caseid}
+        </select>
+    <insert id="InputCaseCheck" parameterType="Casecheck">
+		insert into `casecheck`(`caseid`,`casetime`,`casename`,`caseinfo`,`casepeople`,`casestatus`,`casenote`)values(#{caseid},#{casetime},#{casename},#{caseinfo},#{casepeople},#{casestatus},#{casenote})
+		</insert>
+    <select id="GetAllIdcardInfo" resultType="Idcard">
+            select `name`,`number` from `idcard`
+        </select>
+    <select id="GetCaseCheckByCaseId" resultType="Casecheck">
+            select * from `casecheck` where `caseid` = #{caseid}  limit 1
+        </select>
+</mapper>

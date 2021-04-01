@@ -1,0 +1,87 @@
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+数据库表设计
+
+用户表:
+  user:
+     `username`  varchar(100)        用户名
+     `password`  varchar(100)        密码
+     `role`      int                 角色   0/1    普通用户/管理员
+ /*    `logintime` varchar(100)        上一次登录时间     */
+
+身份证信息表
+  Idcard:
+     `name`     varchar(50)         身份证姓名
+     `number`   varchar(50)         身份证号码      主键
+     `sex`      int                 性别  0/1  0-女  1-男  (身份证号码的第十七位判断性别,如果为奇数则为男性,偶数则为女性)
+     `birthday` varchar(50)         出生日期       数据类型类似19951010
+     `home`     varchar(200)        住址
+     `imageurl` varchar(200)        头像在服务器存放地址url
+
+系统案件表:   (模拟的系统案件拉取)
+  systemcase:
+     `caseid`    varchar(200)       案件编号    主键       以时间信息+第一个案件关联人的身份证号
+                                                               例2021年1月2日 3点45分56秒 + 421081199901012277
+                                                               20210102034556421081199901012277
+     `casetime`  varchar(200)       有手工录入时间按手工的 没有就按提交时间与上面时间串一致
+     `casename`  varchar(200)       案件名称/简称
+     `caseinfo`  varchar(2500)      案件内容
+     `casepeople` varchar(2000)     案件关联的人   数据格式例 "张三,421081199901012222,,李四,421081199812121111,,"
+     `casestatus` int               0/1/2 --- 侦查/结案/销案
+     `casenote`  varchar(2500)      案件审理侦查过程中的笔录和阶段处理结果
+     `casecheckstatus` int          0/1/2/3     未处理/在审核/已入库/被删除(被删除的系统案件,复核时可能被删除,但是还是保留在数据库)
+
+
+复核表:
+  casecheck:
+     - 拉取系统案件  (从上级系统拉取案件信息)
+     - 手工新增案件  (本地手工新增案件信息)
+     - 案件复核入库  (复核上面的两种案件,添加至证据管理系统)
+     表结构与case表一致
+
+
+
+案件信息表
+  case:
+     `caseid`    varchar(200)       案件编号    主键       以时间信息+第一个案件关联人的身份证号
+                                                         例2021年1月2日 3点45分56秒 + 421081199901012277
+                                                         20210102034556421081199901012277
+     `casetime`  varchar(200)       有手工录入时间按手工的 没有就按提交时间与上面时间串一致
+     `casename`  varchar(200)       案件名称/简称
+     `caseinfo`  varchar(2500)      案件内容
+     `casepeople` varchar(2000)     案件关联的人   数据格式例 "张三,421081199901012222,,李四,421081199812121111,,"
+     `casestatus` int               0/1/2 --- 侦查/结案/销案
+     `casenote`  varchar(2500)      案件审理侦查过程中的笔录和阶段处理结果
+     `caseconnect` varchar(2000)    1,a,,2,b,,3,c,,4,b,,5,a,,   关联的证据   1 2 3 4代表证据id  a/b/c代表 关联/待关联/拒绝关联
+
+证据关联状态表:
+  connecttip:
+     `cstatus`  int        0/1/2/3    未处理/已处理/申请拒绝/申请解除关联
+     `cuser`    varchar(60)      提交关联的用户
+     `caseid`   varchar(200)     要关联的案件编号
+     `eid`      int              要进行关联的证据eidversion
+     `canote`   varchar(1200)    管理员留言
+     `cunote`   varchar(1200)    用户留言
+
+证据表
+   evidence:
+     `eidversion`   int   主键自增  auto_increment    并发环境中自增主键也能保证提交id版本的唯一性
+     `eid`    varchar(100)       案件编号+第一次生成的eidversion
+     `etime` varchar(100)        证据录入时间
+     `elasttime`  varchar(100)   最后一次修改时间
+     `ecaseid`    varchar(200)   关联的案件id
+     `eurl`  varchar(2000)       url,,,,url,,,,url   证据内容  url格式是存放的   图片/语音/视频/文档  的url地址
+     `ehistory`  varchar(2000)     证据是重要的东西，不允许删除，只允许修改，即使修改了也要保存历史的记录
+                                   数据格式  update_eid,new_eid   新的往后面累加
+     `enote`  varchar(2000)      备注
+     `euser` varchar(50)         操作用户信息
+     `eudpate`  int              0/1/2   被修改了没被管理员确定/使用中的证据版本/被管理员拒绝
+     `estatus`   int             证据状态   0/1    失效/有效
+
+
+
+
+
+
+
+

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <title>司法证据管理系统</title>
+    <footer th:replace="~{common/nav_user :: user_head}"></footer>
+    <style>
+        .admin-index-search {
+            position: absolute;
+            left: 0;
+            top: 200px;
+            width: 100%;
+            text-align: center;
+        }
+        .for-search {
+            width: 400px;
+            height: 60px;
+        }
+        .for-search-btn {
+            width: 100px;
+            height: 60px;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <footer th:replace="~{common/nav_user :: user_header_nav}"></footer>
+    <footer th:replace="~{common/nav_user :: user_side_nav}"></footer>
+    <div class="layui-body">
+        <form th:action="@{/user_get}" class="admin-index-search" method="post">
+            <div class="layui-inline">
+                <input placeholder="搜索案件及证据信息" name="query" autocomplete="off" value class="layui-input for-search">
+            </div><button class="layui-btn for-search-btn"><i class="layui-icon layui-icon-search"></i></button>
+        </form>
+    </div>
+    <footer th:replace="~{common/nav_user :: user_footer}"></footer>
+</div>
+<script type="text/javascript">
+    layui.use('element', function () {
+
+    });
+    layui.use('layer', function () {
+
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <title>退回维护处理</title>
+    <footer th:replace="~{common/nav_user :: user_head}"></footer>
+
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <footer th:replace="~{common/nav_user :: user_header_nav}"></footer>
+    <footer th:replace="~{common/nav_user :: user_side_nav}"></footer>
+
+    <div class="layui-body">
+        <div style="padding: 15px;">退回维护处理</div>
+    </div>
+
+    <footer th:replace="~{common/nav_user :: user_footer}"></footer>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $("#user_b").addClass("layui-nav-itemed");
+        $("#user_b2").addClass("layui-this");
+    });
+    layui.use('element', function () {
+        // var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        // element.on('nav(demo)', function (elem) {
+        //     layer.msg(elem.text());
+        // });
+    });
+    layui.use('layer', function () {
+
+    });
+</script>
+</body>
+</html>

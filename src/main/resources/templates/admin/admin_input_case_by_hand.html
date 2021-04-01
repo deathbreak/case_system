@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <title>手工新增案件</title>
+    <footer th:replace="~{common/nav_admin :: admin_head}"></footer>
+
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <footer th:replace="~{common/nav_admin :: admin_header_nav}"></footer>
+    <footer th:replace="~{common/nav_admin :: admin_side_nav}"></footer>
+
+    <div class="layui-body" style="background-color: #F2F2F2;">
+        <form class="layui-form" style="margin: 30px" th:action="@{/admin_input_case_by_hand}" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">案件时间:</label>
+                <div class="layui-input-block">
+                    <input type="text" name="casetime" id="input_casetime"
+                           th:value="${inputcase!=null?inputcase.casetime:''}" placeholder="yyyy-MM-dd HH:mm:ss"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">案件名称:</label>
+                <div class="layui-input-block">
+                    <input type="text" value="" name="casename" id="input_casename"
+                           th:value="${inputcase!=null?inputcase.casename:''}" autocomplete="off"
+                           placeholder="请输入案件名称" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">案件内容:</label>
+                <div class="layui-input-block">
+                    <textarea placeholder="请输入内容" name="caseinfo" id="input_caseinfo"
+                              th:text="${inputcase!=null?inputcase.caseinfo:''}"
+                              class="layui-textarea"></textarea>
+                </div>
+            </div>
+            <div class="layui-form-item layui-col-md8">
+                <label class="layui-form-label">案件关联人:</label>
+                <div class="layui-input-block">
+                    <input type="text" name="casepeople" id="input_casepeople"
+                           th:value="${inputcase!=null?inputcase.casepeople:''}" autocomplete="off" class="layui-input" readonly>
+                </div>
+            </div>
+
+            <div class="layui-inline layui-col-md4">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">身份证信息</label>
+                        <div class="layui-input-inline">
+                            <select name="modules" lay-search="" id="sel">
+                                <option value="">直接选择或搜索选择</option>
+                                <option  th:if="${idcard != null}" th:each="card : ${idcard}" th:value="${card.name}" th:text="${card.number}"></option>
+                            </select>
+                        </div>
+                        <button class="layui-btn layui-btn-normal" id="select_btn" type="button">添加</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <!--            <b>案件状态:</b>-->
+                <label class="layui-form-label">案件状态:</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="casestatus" id="r1" value="0"
+                           th:checked="${inputcase!=null?inputcase.casestatus == 0:false}" title="侦查">
+                    <input type="radio" name="casestatus" id="r2" value="1"
+                           th:checked="${inputcase!=null?inputcase.casestatus == 1:false}" title="结案">
+                    <input type="radio" name="casestatus" id="r3" value="2"
+                           th:checked="${inputcase!=null?inputcase.casestatus == 2:false}" title="销案">
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">审理记录:</label>
+                <div class="layui-input-block">
+                    <textarea placeholder="请输入内容" name="casenote" id="input_casenote"
+                              th:text="${inputcase!=null?inputcase.casenote:''}"
+                              class="layui-textarea"></textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <button class="layui-btn layui-btn-normal layui-col-md-offset11" type="submit">提交</button>
+            </div>
+        </form>
+
+    </div>
+
+    <footer th:replace="~{common/nav_admin :: admin_footer}"></footer>
+</div>
+<input type="hidden" id="msg" th:value="${msg!=null?msg:''}"/>
+
+
+<script type="text/javascript">
+    $(function () {
+        $("#admin_a").addClass("layui-nav-itemed");
+        $("#admin_a2").addClass("layui-this");
+        var msg = $("#msg").val();
+        if (msg != "") {
+            layer.msg(msg);
+        }
+    });
+    layui.use('element', function () {
+
+    });
+    layui.use(['form', 'layedit'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit;
+        form.render();
+    });
+
+    laydate.render({
+        elem: '#input_casetime'
+        , type: 'datetime'
+    });
+
+    $(".layui-btn.layui-btn-normal.layui-col-md-offset11").click(function () {
+        if (valid_it("#input_casetime") && valid_it("#input_casename") && valid_it("#input_caseinfo") && valid_it("#input_casepeople") && valid_it("#input_casenote") && ($('input:radio[name="casestatus"]:checked').val() != null)) {
+            return true;
+        } else {
+            layer.alert('录入的信息不允许有空', {
+                title: '错误提示',
+            });
+            return false;
+        }
+    });
+
+    $("#select_btn").click(function () {
+        var _value = $("#sel option:selected");
+        var _case = $("#input_casepeople");
+        if(_value.text() == '直接选择或搜索选择'){
+                layer.msg('请点击选择框选择或搜索关联人')
+        }else{
+            if(_case.val().indexOf(_value.text()) == -1) {
+                _case.val(_case.val() + _value.val() + ',' + _value.text() + ',,')
+            }else{
+                layer.msg('不能重复添加关联人')
+            }
+        }
+    });
+
+    // $("#input_casepeople").click(function () {
+    //     layer.open({
+    //         type: 1,
+    //         title: ['修改案件信息'],
+    //         skin: 'layui-layer-rim', //加上边框
+    //         area: ['80%', '60%'], //宽高
+    //         content: $("#query_select")
+    //     });
+    //
+    // });
+
+    function valid_it(id) {
+        if ($(id).val().trim() == "" || $(id).val().length == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    };
+</script>
+</body>
+</html>

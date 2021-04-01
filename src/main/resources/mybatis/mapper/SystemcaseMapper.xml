@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.abc.case_system.dao.SystemcaseMapper">
+    <select id="CountSystemcase" resultType="java.lang.Integer">
+            select count(*) from `systemcase` where `casecheckstatus`=#{casecheckstatus}
+        </select>
+    <select id="CountSystemcaseByCaseId" resultType="java.lang.Integer">
+            select count(*) from `systemcase` where `caseid` = #{caseid}
+        </select>
+    <select id="GetSystemCaseByCaseId" resultType="Systemcase">
+            select * from `systemcase` where `caseid` = #{caseid}  limit 1
+        </select>
+    <select id="GetAllSystemcase" resultType="Systemcase">
+            select * from `systemcase` where `casecheckstatus`=#{casecheckstatus}
+        </select>
+    <update id="UpdateCaseCheckStatusByCaseId">
+				update `systemcase` set `casecheckstatus`=#{casecheckstatus}  where `caseid`=#{caseid}
+		</update>
+    <delete id="DelSyscase">
+			delete from `systemcase` where `caseid` = #{caseid}
+		</delete>
+</mapper>

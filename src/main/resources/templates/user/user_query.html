@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <title>司法证据管理系统</title>
+    <footer th:replace="~{common/nav_user :: user_head}"></footer>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <footer th:replace="~{common/nav_user :: user_header_nav}"></footer>
+    <footer th:replace="~{common/nav_user :: user_side_nav}"></footer>
+    <div class="layui-body" style="background-color: #F2F2F2;">
+        <a th:href="@{/user_index}" th:utext="${'<<==回到首页'}">回到首页</a>
+        <div style="padding: 20px;" th:if="${msg != 0}" th:each="syscase : ${query_result}">
+            <div class="layui-row layui-col-space15" >
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header" th:utext="${'<b>案件信息:</b>'+ syscase.casename}">标题</div>
+                        <div class="layui-card-body">
+                            <div th:utext="${'<b>案件编号:</b>'+ syscase.caseid}"></div>
+                            <div th:utext="${'<b>案件发生时间:</b>'+ syscase.casetime}"></div>
+                            <div th:utext="${'<b>案件内容:</b>'+ syscase.caseinfo}"></div>
+                            <div th:utext="${'<b>案件关联人:</b>'+ syscase.casepeople}"></div>
+                            <div>
+                                <b>案件状态:</b>
+                                <input type="radio" th:checked="${syscase.casestatus == 0}" disabled>侦查
+                                <input type="radio" th:checked="${syscase.casestatus == 1}" disabled>结案
+                                <input type="radio" th:checked="${syscase.casestatus == 2}" disabled>销案
+                            </div>
+                            <div th:utext="${'<b>案件审理记录:</b>  '+ syscase.casenote}"></div>
+                            <div th:utext="${'<b>案件关联证据:</b>'+ syscase.caseconnect}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer th:replace="~{common/nav_user :: user_footer}"></footer>
+</div>
+<input type="hidden" id="msg" th:value="${msg}"/>
+<script type="text/javascript">
+    $(function () {
+        var msg = $("#msg").val();
+        if(msg == "0") {
+            layer.msg("没有搜索到匹配的信息");
+        }
+    });
+    layui.use('element', function () {
+
+    });
+    layui.use('layer', function () {
+
+    });
+</script>
+</body>
+</html>
