@@ -67,22 +67,27 @@
                         <a href="javascript:;">录入证据</a>
                         <dl class="layui-nav-child">
                             <dd id="user_a1"><a th:href="@{/user_input_evidence}">新增证据</a></dd>
-                            <dd id="user_a2"><a th:href="@{/user_return_correlation}">退回关联处理</a></dd>
-                            <dd id="user_a3"><a th:href="@{/user_apply_evidence_correlation}">申请证据关联</a></dd>
                         </dl>
                     </li>
                     <li class="layui-nav-item" id="user_b">
-                        <a href="javascript:;">证据维护</a>
+                        <a href="javascript:;">关联维护</a>
                         <dl class="layui-nav-child">
-                            <dd id="user_b1"><a th:href="@{/user_maintain_for_input_evidence}">录入证据管理</a></dd>
-                            <dd id="user_b2"><a th:href="@{/user_return_maintain_evidence}">退回维护处理</a></dd>
+                            <dd id="user_b1"><a th:href="@{/user_pending_cor_maintain}">待关联证据维护</a></dd>
+                            <dd id="user_b2"><a th:href="@{/user_return_correlation}">退回关联处理</a></dd>
+                            <dd id="user_b3"><a th:href="@{/user_apply_for_disconnect}">申请解除关联</a></dd>
                         </dl>
                     </li>
                     <li class="layui-nav-item" id="user_c">
-                        <a href="javascript:;">用户录入证据管理</a>
+                        <a href="javascript:;">证据维护</a>
                         <dl class="layui-nav-child">
-                            <dd id="user_c1"><a th:href="@{/user_query_evidence}">录入证据查询</a></dd>
-                            <dd id="user_c2"><a th:href="@{/user_maintain_for_correlation}">证据维护关联</a></dd>
+                            <dd id="user_c1"><a th:href="@{/user_maintain_for_input_evidence}">录入证据管理</a></dd>
+                            <dd id="user_c2"><a th:href="@{/user_return_maintain_evidence}">退回维护处理</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item" id="user_d">
+                        <a href="javascript:;">其他渠道证据</a>
+                        <dl class="layui-nav-child">
+                            <dd id="user_d1"><a th:href="@{/user_other_input_evidence}">渠道证据录入</a></dd>
                         </dl>
                     </li>
                     <li class="layui-nav-item" style="height: 30px; text-align: center"></li>

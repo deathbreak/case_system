@@ -56,7 +56,7 @@ ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 证据关联状态表:
   connecttip:
-     `cstatus`  int        0/1/2/3    未处理/已处理/申请拒绝/申请解除关联
+     `cstatus`  int        0/1/2/3/4    未处理/已处理/申请拒绝/申请解除关联/解除关联
      `cuser`    varchar(60)      提交关联的用户
      `caseid`   varchar(200)     要关联的案件编号
      `eid`      varchar(100)     要进行关联的证据eidversion初始版本
