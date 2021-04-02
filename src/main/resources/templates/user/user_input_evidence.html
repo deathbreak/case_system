@@ -11,26 +11,143 @@
     <footer th:replace="~{common/nav_user :: user_header_nav}"></footer>
     <footer th:replace="~{common/nav_user :: user_side_nav}"></footer>
 
-    <div class="layui-body">
-        <div style="padding: 15px;">新增证据</div>
+    <div class="layui-body" style="background-color: #F2F2F2;">
+
+        <form class="layui-form" style="margin: 30px" th:action="@{/user_input_evidence}" method="post">
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">证据录入时间:</label>
+                <div class="layui-input-block">
+                    <input type="text" name="etime" id="input_etime"
+                           th:value="${inputevi!=null?inputevi.etime:''}" placeholder="yyyy-MM-dd HH:mm:ss"
+                           class="layui-input" readonly>
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-col-md8">
+                <label class="layui-form-label">选择关联案件:</label>
+                <div class="layui-input-block">
+                    <input type="text" name="ecaseid" id="input_ecaseid"
+                           th:value="${inputevi!=null?inputevi.ecaseid:''}" autocomplete="off" class="layui-input" readonly>
+                </div>
+            </div>
+
+            <div class="layui-inline layui-col-md4">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">关联案件编号</label>
+                        <div class="layui-input-inline">
+                            <select name="modules" lay-search="" id="sel">
+                                <option value="">直接选择或搜索选择</option>
+                                <option  th:if="${caseinfo != null}" th:each="case : ${caseinfo}" th:value="${case.caseid}" th:text="${case.caseid}"></option>
+                            </select>
+                        </div>
+                        <button class="layui-btn layui-btn-normal" id="select_btn" type="button">添加</button>
+                        <button class="layui-btn layui-btn-danger" id="reset_btn" type="button">清除</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">证据内容:</label>
+                <div class="layui-input-block">
+                    <textarea placeholder="请输入内容" name="eurl" id="input_eurl"
+                              th:text="${inputevi!=null?inputevi.eurl:''}"
+                              class="layui-textarea"></textarea>
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">证据备注:</label>
+                <div class="layui-input-block">
+                    <textarea placeholder="请输入内容" name="enote" id="input_enote"
+                              th:text="${inputevi!=null?inputevi.enote:''}"
+                              class="layui-textarea"></textarea>
+                </div>
+            </div>
+
+            <!-- 证据提交用户-->
+            <input type="hidden" name="euser" th:value="${session.login.username}"/>
+
+            <div class="layui-form-item">
+                <button class="layui-btn layui-btn-normal layui-col-md-offset11" type="submit">提交</button>
+            </div>
+        </form>
+
+
+
     </div>
 
     <footer th:replace="~{common/nav_user :: user_footer}"></footer>
 </div>
+
+<input type="hidden" id="msg" th:value="${msg!=null?msg:''}"/>
+
 <script type="text/javascript">
     $(function () {
         $("#user_a").addClass("layui-nav-itemed");
         $("#user_a1").addClass("layui-this");
+        var msg = $("#msg").val();
+        if (msg != "") {
+            layer.msg(msg);
+        }
     });
     layui.use('element', function () {
-        // var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
-        // element.on('nav(demo)', function (elem) {
-        //     layer.msg(elem.text());
-        // });
+
     });
+
+    layui.use(['form', 'layedit'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit;
+        form.render();
+    });
+
+    laydate.render({
+        elem: '#input_etime'
+        , type: 'datetime'
+    });
+
     layui.use('layer', function () {
 
     });
+
+    $(".layui-btn.layui-btn-normal.layui-col-md-offset11").click(function () {
+        if (valid_it("#input_etime") && valid_it("#input_ecaseid") && valid_it("#input_eurl") && valid_it("input_enote") && valid_it("#input_casenote")) {
+            return true;
+        } else {
+            layer.alert('录入的信息不允许有空', {
+                title: '错误提示',
+            });
+            return false;
+        }
+    });
+
+    $("#select_btn").click(function () {
+        var _value = $("#sel option:selected");
+        var _case = $("#input_ecaseid");
+        if(_value.text() == '直接选择或搜索选择'){
+            layer.msg('请点击选择框选择或搜索关联人')
+        }else{
+            if(!valid_it("#input_ecaseid")) {
+                _case.val(_value.val())
+            }else{
+                layer.msg('只能关联一个案件')
+            }
+        }
+    });
+
+    $("#reset_btn").click(function () {
+        $("#input_ecaseid").val("");
+    });
+
+    function valid_it(id) {
+        if ($(id).val().trim() == "" || $(id).val().length == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    };
 </script>
 </body>
 </html>

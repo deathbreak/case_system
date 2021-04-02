@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.abc.case_system.dao.EvidenceMapper">
+    <select id="CountEvidenceByTimeIdNote" resultType="java.lang.Integer">
+            select count(*) from `evidence` where `etime`=#{etime} and `ecaseid`=#{ecaseid} and `enote`=#{enote}
+        </select>
+    <insert id="InsertEvidence" parameterType="Evidence">
+        insert into
+        `evidence`(`etime`,`elasttime`,`ecaseid`,`eurl`,`enote`,`euser`,`eupdate`,`estatus`)values(#{etime},#{elasttime},#{ecaseid},#{eurl},#{enote},#{euser},#{eupdate},#{estatus})
+        <selectKey keyProperty="eidversion" resultType="java.lang.Integer">
+            select LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+    <update id="UpdateEidHisByKey" parameterType="Evidence">
+            update `evidence` set `eid`=#{eid},`ehistory`=#{ehistory} where `eidversion`=#{eidversion}
+    </update>
+</mapper>

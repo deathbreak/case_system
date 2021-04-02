@@ -22,6 +22,10 @@ public interface CaseMapper {
 
     void UpdateCaseInfo(Case aCase);
 
+    List<Case> GetAllCaseIdAndCaseName();
+
+
+
 //    List<Case> QueryByCaseid(String caseid);
 
 //    int CountQueryByCaseid(String caseid);

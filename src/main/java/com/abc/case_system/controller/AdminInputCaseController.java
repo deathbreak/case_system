@@ -4,6 +4,7 @@ import com.abc.case_system.bean.Casecheck;
 import com.abc.case_system.bean.Systemcase;
 import com.abc.case_system.service.CasecheckService;
 import com.abc.case_system.service.SystemcaseService;
+import com.abc.case_system.utils.TimeInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,7 +55,7 @@ public class AdminInputCaseController {
     @PostMapping("/admin_input_case_by_hand")
     public String to_admin_input_case_by_hand(Casecheck casecheck, HashMap<String, Object> map) {
         int casepeople_index = casecheck.getCasepeople().indexOf(",");
-        String caseid = casecheck.getCasetime().replace('-', ' ').replace(':', ' ').replace(" ", "") + casecheck.getCasepeople().substring(casepeople_index + 1, casepeople_index + 19);
+        String caseid = TimeInfo.time_to_string(casecheck.getCasetime()) + casecheck.getCasepeople().substring(casepeople_index + 1, casepeople_index + 19);
         casecheck.setCaseid(caseid);
         Boolean check = casecheckService.InputCaseService(casecheck);
         if (check) {

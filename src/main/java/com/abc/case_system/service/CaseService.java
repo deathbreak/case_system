@@ -29,4 +29,8 @@ public class CaseService {
     public void UpdateCase(Case aCase) {
         caseMapper.UpdateCaseInfo(aCase);
     }
+
+    public List<Case> GetAllCaseId() {
+        return caseMapper.GetAllCaseIdAndCaseName();
+    }
 }

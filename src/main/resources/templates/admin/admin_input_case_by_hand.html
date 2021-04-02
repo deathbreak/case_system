@@ -18,7 +18,7 @@
                 <div class="layui-input-block">
                     <input type="text" name="casetime" id="input_casetime"
                            th:value="${inputcase!=null?inputcase.casetime:''}" placeholder="yyyy-MM-dd HH:mm:ss"
-                           class="layui-input">
+                           class="layui-input" readonly>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -56,6 +56,7 @@
                             </select>
                         </div>
                         <button class="layui-btn layui-btn-normal" id="select_btn" type="button">添加</button>
+                        <button class="layui-btn layui-btn-danger" id="reset_btn" type="button">清除</button>
                     </div>
                 </div>
             </div>
@@ -139,6 +140,10 @@
                 layer.msg('不能重复添加关联人')
             }
         }
+    });
+
+    $("#reset_btn").click(function () {
+        $("#input_casepeople").val("");
     });
 
     // $("#input_casepeople").click(function () {

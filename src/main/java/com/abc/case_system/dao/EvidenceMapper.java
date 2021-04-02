@@ -1,0 +1,14 @@
+package com.abc.case_system.dao;
+
+import com.abc.case_system.bean.Evidence;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface EvidenceMapper {
+
+    int CountEvidenceByTimeIdNote(Evidence evidence);
+
+    int InsertEvidence(Evidence evidence);
+
+    void UpdateEidHisByKey(Evidence evidence);
+}

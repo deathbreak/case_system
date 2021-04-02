@@ -15,6 +15,9 @@
     <select id="GetAllCase" resultType="Case">
             select * from `case`
         </select>
+    <select id="GetAllCaseIdAndCaseName" resultType="Case">
+            select `caseid`,`casename` from `case`
+        </select>
     <select id="QueryByIdCardAndCaseId" resultType="Case">
 				select * from `case` where `casepeople` like "%"#{str}"%" or `caseid` like "%"#{str}"%"
 		</select>
