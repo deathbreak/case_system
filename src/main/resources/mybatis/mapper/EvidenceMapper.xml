@@ -6,6 +6,7 @@
     <select id="CountEvidenceByTimeIdNote" resultType="java.lang.Integer">
             select count(*) from `evidence` where `etime`=#{etime} and `ecaseid`=#{ecaseid} and `enote`=#{enote}
         </select>
+
     <insert id="InsertEvidence" parameterType="Evidence">
         insert into
         `evidence`(`etime`,`elasttime`,`ecaseid`,`eurl`,`enote`,`euser`,`eupdate`,`estatus`)values(#{etime},#{elasttime},#{ecaseid},#{eurl},#{enote},#{euser},#{eupdate},#{estatus})
@@ -13,7 +14,17 @@
             select LAST_INSERT_ID()
         </selectKey>
     </insert>
+
     <update id="UpdateEidHisByKey" parameterType="Evidence">
             update `evidence` set `eid`=#{eid},`ehistory`=#{ehistory} where `eidversion`=#{eidversion}
     </update>
+
+    <update id="UpdateUrlNoteLastTimeByKey" parameterType="Evidence">
+            update `evidence` set `eurl`=#{eurl},`enote`=#{enote},`elasttime`=#{elasttime} where `eidversion`=#{eidversion}
+    </update>
+
+    <select id="GetEviByKey" resultType="Evidence">
+				select * from `evidence` where `eidversion`=#{eidversion}
+		</select>
+
 </mapper>

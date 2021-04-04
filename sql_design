@@ -59,7 +59,7 @@ ENGINE=InnoDB DEFAULT CHARSET=utf8;
      `cstatus`  int        0/1/2/3/4    未处理/已处理/申请拒绝/申请解除关联/解除关联
      `cuser`    varchar(60)      提交关联的用户
      `caseid`   varchar(200)     要关联的案件编号
-     `eid`      varchar(100)     要进行关联的证据eidversion初始版本
+     `eid`      int     要进行关联的证据eidversion最新版本   主键
      `canote`   varchar(1200)    管理员留言
      `cunote`   varchar(1200)    用户留言
 
@@ -75,7 +75,7 @@ ENGINE=InnoDB DEFAULT CHARSET=utf8;
                                    数据格式  update_eid,new_eid   新的往后面累加
      `enote`  varchar(2000)      备注
      `euser` varchar(50)         操作用户信息
-     `eudpate`  int              0/1/2   被修改了没被管理员确定/使用中的证据版本/被管理员拒绝
+     `eupdate`  int              0/1/2   被修改了没被管理员确定/使用中的证据版本/被管理员拒绝
      `estatus`   int             证据状态   0/1    失效/有效
 
 

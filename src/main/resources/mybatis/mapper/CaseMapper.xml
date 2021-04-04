@@ -27,6 +27,12 @@
     <update id="UpdateCaseInfo" parameterType="Case">
 			update `case` set `casename`=#{casename},`caseinfo`=#{caseinfo},`casestatus`=#{casestatus},`casenote`=#{casenote} where `caseid`=#{caseid}
 			</update>
+    <update id="UpdateCaseEvidence">
+			update `case` set `caseconnect`=#{caseconnect} where `caseid`=#{caseid}
+			</update>
+    <select id="QueryCaseconnectByCaseid" resultType="java.lang.String">
+				select `caseconnect` from `case` where `caseid`=#{caseid}
+		</select>
 <!--    <select id="QueryByCaseid" resultType="Case">-->
 <!--				select * from `case` where `caseid` like "%"#{caseid}"%"-->
 <!--		</select>-->

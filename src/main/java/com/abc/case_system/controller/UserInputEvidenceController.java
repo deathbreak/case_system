@@ -35,10 +35,8 @@ public class UserInputEvidenceController {
             map.put("msg", "这个证据已经添加过了");
             return "user/user_input_evidence";
         }else{
-            map.put("inputevi", evidence);
-            map.put("caseinfo", caseService.GetAllCaseId());
             evidenceService.InsertNewEvidence(evidence);
-            return "user/user_input_evidence";
+            return "redirect:/user_pending_cor_maintain";
         }
     }
 

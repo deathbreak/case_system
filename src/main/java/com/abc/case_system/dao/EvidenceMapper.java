@@ -11,4 +11,8 @@ public interface EvidenceMapper {
     int InsertEvidence(Evidence evidence);
 
     void UpdateEidHisByKey(Evidence evidence);
+
+    Evidence GetEviByKey(int eidversion);
+
+    void UpdateUrlNoteLastTimeByKey(Evidence evidence);
 }

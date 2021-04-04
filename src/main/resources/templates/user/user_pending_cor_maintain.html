@@ -11,16 +11,94 @@
     <footer th:replace="~{common/nav_user :: user_header_nav}"></footer>
     <footer th:replace="~{common/nav_user :: user_side_nav}"></footer>
 
-    <div class="layui-body">
-        <div style="padding: 15px;">待关联证据维护</div>
+    <div class="layui-body" style="background-color: #F2F2F2;">
+
+
+        <div style="padding: 20px;" th:if="${msg != 0}" th:each="evi : ${eviinfo}">
+            <div class="layui-row layui-col-space15" >
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header" th:utext="${'<b>证据编号:</b>'+ evi.eid}">标题</div>
+                        <div class="layui-card-body">
+                            <div th:utext="${'<b>证据录入时间:</b>'+ evi.etime}"></div>
+                            <div th:utext="${'<b>最后修改时间:</b>'+ evi.elasttime}"></div>
+                            <div th:utext="${'<b>关联案件编号:</b>'+ evi.ecaseid}"></div>
+                            <div th:utext="${'<b>证据内容:</b>'+ evi.eurl}"></div>
+                            <div th:utext="${'<b>证据版本历史:</b>'+ evi.ehistory}"></div>
+                            <div th:utext="${'<b>备注:</b>'+ evi.enote}"></div>
+                            <div>
+                                <b>证据使用状态:</b>
+                                <input type="radio" th:checked="${evi.eupdate == 0}" disabled>待审批
+                                <input type="radio" th:checked="${evi.eupdate == 1}" disabled>使用中
+                                <input type="radio" th:checked="${evi.eupdate == 2}" disabled>被拒绝
+                            </div>
+                            <b class="layui-inline">证据有效:</b><div class="layui-inline" th:utext="${evi.estatus == 1 ? '是':'否'}"></div>
+                            <div>
+                                <input type="hidden" th:value="${evi.eidversion}"/>
+                                <input type="hidden" th:value="${evi.eid}"/>
+                                <input type="hidden" th:value="${evi.eurl}"/>
+                                <input type="hidden" th:value="${evi.enote}"/>
+                                <button class="layui-btn layui-btn-radius layui-btn-danger" type="button">修改证据
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </div>
 
     <footer th:replace="~{common/nav_user :: user_footer}"></footer>
 </div>
+
+<div id="layer_open">
+    <form class="layui-form" style="margin: 20px" th:action="@{/user_update_pending_eviinfo}" method="post">
+        <input type="hidden" name="eidversion" id="update_eid" value="">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">证据编号:</label>
+            <div class="layui-input-block">
+                <input type="text" value="" id="_eid" class="layui-input" disabled>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">证据内容:</label>
+            <div class="layui-input-block">
+                <input type="text" value="" name="eurl" id="update_eurl"  class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注:</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入备注信息" name="enote" id="update_enote" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button class="layui-btn layui-btn-normal layui-col-md-offset11" type="submit">确认修改</button>
+        </div>
+    </form>
+</div>
+
+
+<input type="hidden" id="msg" th:value="${msg}"/>
+<input type="hidden" id="info" th:value="${info}"/>
 <script type="text/javascript">
     $(function () {
         $("#user_b").addClass("layui-nav-itemed");
         $("#user_b1").addClass("layui-this");
+        var msg = $("#msg").val();
+        if(msg == "0") {
+            layer.msg("该用户没有待关联的证据信息");
+        }
+        if (valid_it("#info")) {
+            if (msg != 0){
+                layer.msg($("#info").val())
+            }else {
+                layer.alert('该用户没有待关联的证据信息,' + $("#info").val())
+            }
+        }
     });
     layui.use('element', function () {
 
@@ -28,6 +106,46 @@
     layui.use('layer', function () {
 
     });
+    layui.use(['form', 'layedit'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+    });
+
+    $(".layui-btn.layui-btn-radius.layui-btn-danger").click(function () {
+        layer.open({
+            type: 1,
+            title: ['修改证据信息'],
+            skin: 'layui-layer-rim', //加上边框
+            area: ['80%', '65%'], //宽高
+            content: $("#layer_open")
+        });
+
+        $("#update_eid").val($(this).parents("div").children("input").eq(0).val())
+        $("#_eid").val($(this).parents("div").children("input").eq(1).val())
+        $("#update_eurl").val($(this).parents("div").children("input").eq(2).val())
+        $("#update_enote").val($(this).parents("div").children("input").eq(3).val())
+        layui.form.render();
+    });
+
+    $(".layui-btn.layui-btn-normal.layui-col-md-offset11").click(function () {
+        if (valid_it("#update_eurl") && valid_it("#update_enote")) {
+            return true;
+        } else {
+            layer.alert('修改的内容信息不能为空值', {
+                title: '错误提示',
+            });
+            return false;
+        }
+    });
+
+    function valid_it(id) {
+        if ($(id).val().trim() == "" || $(id).val().length == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    };
 </script>
 </body>
 </html>

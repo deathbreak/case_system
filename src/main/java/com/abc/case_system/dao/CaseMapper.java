@@ -2,6 +2,7 @@ package com.abc.case_system.dao;
 
 import com.abc.case_system.bean.Case;
 import com.abc.case_system.bean.Casecheck;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,8 +25,9 @@ public interface CaseMapper {
 
     List<Case> GetAllCaseIdAndCaseName();
 
+    void UpdateCaseEvidence(@Param("caseid") String caseid, @Param("caseconnect") String caseconnect);
 
-
+    String QueryCaseconnectByCaseid(String caseid);
 //    List<Case> QueryByCaseid(String caseid);
 
 //    int CountQueryByCaseid(String caseid);

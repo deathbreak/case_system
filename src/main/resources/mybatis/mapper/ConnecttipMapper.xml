@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.abc.case_system.dao.ConnecttipMapper">
+    <insert id="AddNewConnect">
+		insert into `connecttip`(`cstatus`,`cuser`,`caseid`,`eid`)values(#{cstatus},#{euser},#{ecaseid},#{eid})
+		</insert>
+
+    <select id="CountConnectByUser" resultType="java.lang.Integer">
+            select count(*) from `connecttip` where `cstatus`=#{cstatus} and `cuser`=#{cuser}
+        </select>
+
+    <select id="GetEidByCstatusUser" resultType="java.lang.Integer">
+				select `eid` from `connecttip` where `cstatus`=#{cstatus} and `cuser`=#{cuser}
+		</select>
+
+    <select id="GetStatusByEid" resultType="java.lang.Integer">
+				select `cstatus` from `connecttip` where `eid`=#{eid}
+		</select>
+
+</mapper>
