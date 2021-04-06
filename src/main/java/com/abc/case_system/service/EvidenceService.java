@@ -1,5 +1,6 @@
 package com.abc.case_system.service;
 
+import com.abc.case_system.bean.Connecttip;
 import com.abc.case_system.bean.Evidence;
 import com.abc.case_system.dao.CaseMapper;
 import com.abc.case_system.dao.ConnecttipMapper;
@@ -47,27 +48,43 @@ public class EvidenceService {
     }
 
     // 查询待关联的该用户证据信息
-    public List<Evidence> GetAllUserPendingConnectEvidence(String username){
+    public List<Evidence> GetAllUserPendingConnectEvidence(String username) {
         List<Integer> eid = connecttipMapper.GetEidByCstatusUser(0, username);
-        if(eid.size() > 0){
+        if (eid.size() > 0) {
             List<Evidence> result = new ArrayList<Evidence>();
-            for(Integer id: eid){
+            for (Integer id : eid) {
                 result.add(evidenceMapper.GetEviByKey(id));
             }
             return result;
-        }else{
+        } else {
             return null;
         }
     }
 
     //修改待关联的证据信息
-    public Boolean UpdatePendingEvi(Evidence evidence){
-        if (connecttipMapper.GetStatusByEid(evidence.getEidversion()) == 0){
+    public Boolean UpdatePendingEvi(Evidence evidence) {
+        if (connecttipMapper.GetStatusByEid(evidence.getEidversion()) == 0) {
             evidence.setElasttime(TimeInfo.get_now_time());
             evidenceMapper.UpdateUrlNoteLastTimeByKey(evidence);
             return true;
-        }else{
+        } else {
             return false;
         }
+    }
+
+    public int CountByCstatus(int cstatus) {
+        return connecttipMapper.CountByStatus(cstatus);
+    }
+
+    public List<String> GetUserByCstatus(int cstatus) {
+        return connecttipMapper.GetUserByStatus(cstatus);
+    }
+
+    public List<Connecttip> GetConnectByCstatus(int cstatus){
+        return connecttipMapper.GetConnectByStatus(cstatus);
+    }
+
+    public Evidence GetEviByEidversion(Integer eid) {
+        return evidenceMapper.GetEviByKey(eid);
     }
 }

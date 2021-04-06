@@ -19,4 +19,16 @@
 				select `cstatus` from `connecttip` where `eid`=#{eid}
 		</select>
 
+    <select id="CountByStatus" resultType="java.lang.Integer">
+            select count(*) from `connecttip` where `cstatus`=#{cstatus}
+        </select>
+
+    <select id="GetUserByStatus" resultType="java.lang.String">
+            select  distinct `cuser` from connecttip where `cstatus` = #{cstatus}
+        </select>
+
+    <select id="GetConnectByStatus" resultType="Connecttip">
+            select  * from connecttip where `cstatus` = #{cstatus}
+        </select>
+
 </mapper>

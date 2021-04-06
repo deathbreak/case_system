@@ -12,24 +12,63 @@
     <footer th:replace="~{common/nav_admin :: admin_side_nav}"></footer>
 
     <div class="layui-body">
-        <div style="padding: 15px;">处理关联</div>
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+            <legend>需要进行确认的待关联证据</legend>
+        </fieldset>
+
+        <div style="margin:20px;" th:if="${countall != 0}">
+            <table class="layui-table">
+                <tr class="layui-table-header">
+                    <th>提交的用户</th>
+                    <th>关联的案件编号</th>
+                    <th>证据编号</th>
+                    <th>操作</th>
+                </tr>
+                <tr th:each="con : ${allconnect}">
+                    <td th:text="${con.cuser}">1</td>
+                    <td th:text="${con.caseid}">2</td>
+                    <td th:text="${con.eid}">3</td>
+                    <td>
+                        <button class="layui-btn layui-btn-normal layui-btn-sm">查看</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+
     </div>
 
     <footer th:replace="~{common/nav_admin :: admin_footer}"></footer>
 </div>
+
+
+<input type="hidden" id="msg" th:value="${countall}"/>
 <script type="text/javascript">
     $(function () {
         $("#admin_b").addClass("layui-nav-itemed");
         $("#admin_b1").addClass("layui-this");
+        var msg = $("#msg").val();
+        if (msg == "0") {
+            layer.msg("没有需要进行确认的待关联证据");
+        }
     });
     layui.use('element', function () {
-        // var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
-        // element.on('nav(demo)', function (elem) {
-        //     layer.msg(elem.text());
-        // });
+
     });
     layui.use('layer', function () {
 
+    });
+
+    $(".layui-btn.layui-btn-normal.layui-btn-sm").click(function () {
+        var cid = $(this).parents("td").parents("tr").children("td").eq(1).text();
+        var eid = $(this).parents("td").parents("tr").children("td").eq(2).text();
+        layer.open({
+            type: 2,
+            title: ['查看案件和关联证据信息'],
+            skin: 'layui-layer-rim', //加上边框
+            area: ['80%', '65%'], //宽高
+            content: '/admin_connect_iframe?cid=' + cid + '&eid=' + eid
+        });
     });
 </script>
 </body>

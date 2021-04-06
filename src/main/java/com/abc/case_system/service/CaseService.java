@@ -33,4 +33,8 @@ public class CaseService {
     public List<Case> GetAllCaseId() {
         return caseMapper.GetAllCaseIdAndCaseName();
     }
+
+    public Case GetCaseByCaseId(String cid) {
+        return caseMapper.GetCaseById(cid);
+    }
 }

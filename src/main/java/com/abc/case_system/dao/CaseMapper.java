@@ -28,6 +28,8 @@ public interface CaseMapper {
     void UpdateCaseEvidence(@Param("caseid") String caseid, @Param("caseconnect") String caseconnect);
 
     String QueryCaseconnectByCaseid(String caseid);
+
+    Case GetCaseById(String caseid);
 //    List<Case> QueryByCaseid(String caseid);
 
 //    int CountQueryByCaseid(String caseid);

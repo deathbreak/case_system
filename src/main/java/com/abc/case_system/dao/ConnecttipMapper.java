@@ -1,5 +1,6 @@
 package com.abc.case_system.dao;
 
+import com.abc.case_system.bean.Connecttip;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -15,4 +16,11 @@ public interface ConnecttipMapper {
 
         //判断是否可以进行修改操作,为0表示可以修改,为1代表管理员审批了
         int GetStatusByEid(@Param("eid") int eid);
+
+        //根据status查询数量
+        int CountByStatus(int cstatus);
+
+        List<String> GetUserByStatus(int cstatus);
+
+        List<Connecttip> GetConnectByStatus(int cstatus);
 }
