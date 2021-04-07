@@ -37,6 +37,11 @@
     <select id="GetCaseById" resultType="Case">
 				select * from `case` where `caseid`=#{caseid}
 		</select>
+
+    <select id="GetCaseconnect" resultType="java.lang.String">
+				select `caseconnect` from `case` where `caseid`=#{caseid}
+		</select>
+
 <!--    <select id="CountQueryByCaseid" resultType="java.lang.Integer">-->
 <!--				select * from `case` where `caseid` like "%"#{caseid}"%"-->
 <!--		</select>-->

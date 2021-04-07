@@ -37,6 +37,7 @@ public class AdminCaseEvidenceCorController {
     //待处理证据确定关联
     @PostMapping("/admin_connect_true")
     public String to_admin_connect_true(String caseid, Integer eid){
+        evidenceService.UpdatePendingEviStatus(eid, caseid);
         System.out.println(caseid + "," + eid);
         return "redirect:/admin_processing_association";
     }

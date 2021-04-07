@@ -23,4 +23,6 @@ public interface ConnecttipMapper {
         List<String> GetUserByStatus(int cstatus);
 
         List<Connecttip> GetConnectByStatus(int cstatus);
+
+        void UpdateCstatusByEid(@Param("cstatus") int cstatus, @Param("eid") int eid);
 }

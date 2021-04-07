@@ -5,6 +5,7 @@ import com.abc.case_system.bean.Evidence;
 import com.abc.case_system.dao.CaseMapper;
 import com.abc.case_system.dao.ConnecttipMapper;
 import com.abc.case_system.dao.EvidenceMapper;
+import com.abc.case_system.utils.ForMsgConnect;
 import com.abc.case_system.utils.TimeInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -86,5 +87,18 @@ public class EvidenceService {
 
     public Evidence GetEviByEidversion(Integer eid) {
         return evidenceMapper.GetEviByKey(eid);
+    }
+
+    //管理员审核待关联证据状态变更
+    public Boolean UpdatePendingEviStatus(Integer eid, String caseid){
+        String str_ = caseMapper.GetCaseconnect(caseid);
+        ForMsgConnect forMsgConnect = ForMsgConnect.Update_connect(eid, "b", "a", str_);
+        if (forMsgConnect.getFlag()){
+            caseMapper.UpdateCaseEvidence(caseid, forMsgConnect.getStr());
+            connecttipMapper.UpdateCstatusByEid(1, eid);
+            return true;
+        }else{
+            return false;
+        }
     }
 }

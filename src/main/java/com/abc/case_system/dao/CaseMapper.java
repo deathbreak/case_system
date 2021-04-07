@@ -30,6 +30,9 @@ public interface CaseMapper {
     String QueryCaseconnectByCaseid(String caseid);
 
     Case GetCaseById(String caseid);
+
+    String GetCaseconnect(String caseid);
+
 //    List<Case> QueryByCaseid(String caseid);
 
 //    int CountQueryByCaseid(String caseid);

@@ -31,4 +31,8 @@
             select  * from connecttip where `cstatus` = #{cstatus}
         </select>
 
+    <update id="UpdateCstatusByEid">
+			update `connecttip` set `cstatus`=#{cstatus} where `eid`=#{eid}
+			</update>
+
 </mapper>
