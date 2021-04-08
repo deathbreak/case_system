@@ -81,7 +81,7 @@ public class EvidenceService {
         return connecttipMapper.GetUserByStatus(cstatus);
     }
 
-    public List<Connecttip> GetConnectByCstatus(int cstatus){
+    public List<Connecttip> GetConnectByCstatus(int cstatus) {
         return connecttipMapper.GetConnectByStatus(cstatus);
     }
 
@@ -89,15 +89,19 @@ public class EvidenceService {
         return evidenceMapper.GetEviByKey(eid);
     }
 
-    //管理员审核待关联证据状态变更
-    public Boolean UpdatePendingEviStatus(Integer eid, String caseid){
+    /*
+    *   管理员审核关联证据状态及信息变更   这里Boolean是为了判定并发环境下的查了被修改的问题,然后加了个synchronized避免了这种情况,
+    *                         使得这个Boolean没了意义,但是高并发的环境下 synchronized 会影响处理速度,还是要删掉了使用
+    *                          Boolean来判定,但是这个项目不会出现高并发的情况所以就用了 锁synchronized
+    */
+    public synchronized Boolean UpdateEviConnect(Integer eid, String caseid, Integer update_status, String canote, String cunote, String replace_old, String replace_new) {
         String str_ = caseMapper.GetCaseconnect(caseid);
-        ForMsgConnect forMsgConnect = ForMsgConnect.Update_connect(eid, "b", "a", str_);
-        if (forMsgConnect.getFlag()){
+        ForMsgConnect forMsgConnect = ForMsgConnect.Update_connect(eid, replace_old, replace_new, str_);
+        if (forMsgConnect.getFlag()) {
             caseMapper.UpdateCaseEvidence(caseid, forMsgConnect.getStr());
-            connecttipMapper.UpdateCstatusByEid(1, eid);
+            connecttipMapper.UpdateConnectByEid(update_status, canote, cunote, eid);
             return true;
-        }else{
+        } else {
             return false;
         }
     }

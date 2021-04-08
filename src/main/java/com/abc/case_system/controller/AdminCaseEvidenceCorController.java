@@ -37,19 +37,16 @@ public class AdminCaseEvidenceCorController {
     //待处理证据确定关联
     @PostMapping("/admin_connect_true")
     public String to_admin_connect_true(String caseid, Integer eid){
-        evidenceService.UpdatePendingEviStatus(eid, caseid);
-        System.out.println(caseid + "," + eid);
+        evidenceService.UpdateEviConnect(eid, caseid, 1,"","","b","a");
         return "redirect:/admin_processing_association";
     }
 
     //待处理证据拒绝关联
     @PostMapping("/admin_connect_false")
     public String to_admin_connect_false(String caseid, Integer eid, String msg){
-        System.out.println(caseid + "," + eid + "," + msg);
+        evidenceService.UpdateEviConnect(eid, caseid,2, msg,"","b","c");
         return "redirect:/admin_processing_association";
     }
-
-
 
     // 历史关联维护
     @RequestMapping("/admin_maintain_for_history_association")

@@ -22,12 +22,14 @@
                     <th>提交的用户</th>
                     <th>关联的案件编号</th>
                     <th>证据编号</th>
+                    <th>用户留言</th>
                     <th>操作</th>
                 </tr>
                 <tr th:each="con : ${allconnect}">
                     <td th:text="${con.cuser}">1</td>
-                    <td th:text="${con.caseid}">2</td>
-                    <td th:text="${con.eid}">3</td>
+                    <td th:text="${con.caseid}">3</td>
+                    <td th:text="${con.eid}">4</td>
+                    <td th:text="${con.cunote}">2</td>
                     <td>
                         <button class="layui-btn layui-btn-normal layui-btn-sm">查看</button>
                     </td>

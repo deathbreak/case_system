@@ -24,5 +24,5 @@ public interface ConnecttipMapper {
 
         List<Connecttip> GetConnectByStatus(int cstatus);
 
-        void UpdateCstatusByEid(@Param("cstatus") int cstatus, @Param("eid") int eid);
+        void UpdateConnectByEid(@Param("cstatus") int cstatus,@Param("canote") String canote,@Param("cunote") String cunote, @Param("eid") int eid);
 }
