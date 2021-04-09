@@ -1,6 +1,7 @@
 package com.abc.case_system.dao;
 
 import com.abc.case_system.bean.Connecttip;
+import com.abc.case_system.bean.ForRejectConnect;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -24,5 +25,9 @@ public interface ConnecttipMapper {
 
         List<Connecttip> GetConnectByStatus(int cstatus);
 
+        List<Connecttip> GetConnectByStatusUser(int cstatus, String cuser);
+
         void UpdateConnectByEid(@Param("cstatus") int cstatus,@Param("canote") String canote,@Param("cunote") String cunote, @Param("eid") int eid);
+
+        List<ForRejectConnect> GetUserConEvi(String cuser, int cstatus);
 }

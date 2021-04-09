@@ -2,6 +2,7 @@ package com.abc.case_system.service;
 
 import com.abc.case_system.bean.Connecttip;
 import com.abc.case_system.bean.Evidence;
+import com.abc.case_system.bean.ForRejectConnect;
 import com.abc.case_system.dao.CaseMapper;
 import com.abc.case_system.dao.ConnecttipMapper;
 import com.abc.case_system.dao.EvidenceMapper;
@@ -73,6 +74,12 @@ public class EvidenceService {
         }
     }
 
+    //修改退回关联的证据信息
+    public void UpdateRejectEvi(Evidence evidence){
+        evidence.setElasttime(TimeInfo.get_now_time());
+        evidenceMapper.UpdateUrlNoteLastTimeByKey(evidence);
+    }
+
     public int CountByCstatus(int cstatus) {
         return connecttipMapper.CountByStatus(cstatus);
     }
@@ -104,5 +111,10 @@ public class EvidenceService {
         } else {
             return false;
         }
+    }
+
+    // 查询用户被退回的证据关联信息
+    public List<ForRejectConnect> GetAllUserEvi(String cuser, int cstatus){
+        return connecttipMapper.GetUserConEvi(cuser, cstatus);
     }
 }

@@ -31,8 +31,16 @@
             select  * from connecttip where `cstatus` = #{cstatus}
         </select>
 
+    <select id="GetConnectByStatusUser" resultType="Connecttip">
+            select  * from connecttip where `cstatus` = #{cstatus} and `cuser`=#{cuser}
+        </select>
+
     <update id="UpdateConnectByEid">
 			update `connecttip` set `cstatus`=#{cstatus},`canote`=#{canote},`cunote`=#{cunote} where `eid`=#{eid}
 			</update>
+
+    <select id="GetUserConEvi" resultType="ForRejectConnect">
+            select `connecttip`.cstatus,`connecttip`.cuser,`connecttip`.caseid,`connecttip`.eid,`connecttip`.canote,`connecttip`.cunote,`evidence`.eurl,`evidence`.enote from  `connecttip` left join `evidence` on `connecttip`.eid = `evidence`.eidversion where `connecttip`.cuser = #{cuser} and `connecttip`.cstatus = #{cstatus}
+        </select>
 
 </mapper>

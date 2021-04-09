@@ -12,15 +12,91 @@
     <footer th:replace="~{common/nav_user :: user_side_nav}"></footer>
 
     <div class="layui-body">
-        <div style="padding: 15px;">退回关联处理</div>
+
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+            <legend>管理员退回的关联证据</legend>
+        </fieldset>
+
+        <div style="padding: 20px;" th:if="${infocount != 0}">
+            <table class="layui-table">
+                <tr class="layui-table-header">
+                    <th>提交的用户</th>
+                    <th>关联的案件编号</th>
+                    <th>证据编号</th>
+                    <th>管理员留言</th>
+                    <th>操作</th>
+                </tr>
+                <tr th:each="con : ${info}">
+                    <td th:text="${con.cuser}">1</td>
+                    <td th:text="${con.caseid}">3</td>
+                    <td th:text="${con.eid}">4</td>
+                    <td th:text="${con.canote}">2</td>
+                    <td>
+                        <input type="hidden" th:value="${con.eid}"/>
+                        <input type="hidden" th:value="${con.caseid}"/>
+                        <input type="hidden" th:value="${con.eurl}"/>
+                        <input type="hidden" th:value="${con.enote}"/>
+                        <button class="layui-btn layui-btn-normal layui-btn-sm">修改并关联</button>
+                        <button class="layui-btn layui-btn-danger layui-btn-sm">解除关联</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+
     </div>
 
     <footer th:replace="~{common/nav_user :: user_footer}"></footer>
 </div>
+
+
+<div id="layer_open" style="display:none;">
+    <form class="layui-form" style="margin: 20px" th:action="@{/user_update_return_eviinfo}" method="post">
+        <input type="hidden" name="eidversion" id="update_eid" value="">
+        <input type="hidden" name="caseid" id="update_caseid" value="">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">证据编号:</label>
+            <div class="layui-input-block">
+                <input type="text" value="" id="_eid" class="layui-input" disabled>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">证据内容:</label>
+            <div class="layui-input-block">
+                <input type="text" value="" name="eurl" id="update_eurl" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注:</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入备注信息" name="enote" id="update_enote" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">给管理员留言:</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入留言信息" name="cunote" id="update_cunote" class="layui-textarea"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <button class="layui-btn layui-btn-normal layui-col-md-offset10" type="submit">确认修改并提交</button>
+        </div>
+    </form>
+</div>
+
+
+
+<input type="hidden" id="infosize" th:value="${infocount}"/>
 <script type="text/javascript">
     $(function () {
         $("#user_b").addClass("layui-nav-itemed");
         $("#user_b2").addClass("layui-this");
+        var msg = $("#infosize").val();
+        if (msg == "0") {
+            layer.msg("该用户没有管理员退回的关联证据");
+        }
     });
     layui.use('element', function () {
         // var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
@@ -31,6 +107,47 @@
     layui.use('layer', function () {
 
     });
+    layui.use(['form', 'layedit'], function () {
+        var form = layui.form
+            , layedit = layui.layedit
+    });
+
+    $(".layui-btn.layui-btn-normal.layui-btn-sm").click(function () {
+        layer.open({
+            type: 1,
+            title: ['修改证据信息'],
+            skin: 'layui-layer-rim', //加上边框
+            shadeClose: true,
+            area: ['80%', '65%'], //宽高
+            content: $("#layer_open")
+        });
+
+        $("#update_eid").val($(this).parents("td").children("input").eq(0).val())
+        $("#_eid").val($(this).parents("td").children("input").eq(0).val())
+        $("#update_caseid").val($(this).parents("td").children("input").eq(1).val())
+        $("#update_eurl").val($(this).parents("td").children("input").eq(2).val())
+        $("#update_enote").val($(this).parents("td").children("input").eq(3).val())
+        layui.form.render();
+    });
+
+    $(".layui-btn.layui-btn-normal.layui-col-md-offset10").click(function () {
+        if (valid_it("#update_eurl") && valid_it("#update_enote") && valid_it("#update_cunote")) {
+            return true;
+        } else {
+            layer.alert('修改的内容信息不能为空值', {
+                title: '错误提示',
+            });
+            return false;
+        }
+    });
+
+    function valid_it(id) {
+        if ($(id).val().trim() == "" || $(id).val().length == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    };
 </script>
 </body>
 </html>

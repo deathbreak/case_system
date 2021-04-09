@@ -1,7 +1,7 @@
 package com.abc.case_system.controller;
 
-import com.abc.case_system.bean.Case;
 import com.abc.case_system.bean.Evidence;
+import com.abc.case_system.bean.ForRejectConnect;
 import com.abc.case_system.bean.User;
 import com.abc.case_system.service.EvidenceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 
 @Controller
 public class UserEviCorController {
@@ -22,7 +23,7 @@ public class UserEviCorController {
     // 待关联证据维护
     @RequestMapping("/user_pending_cor_maintain")
     public String to_user_pending_cor_maintain(String info, HashMap<String, Object> map, HttpServletRequest request) {
-        if(null != info && !info.isEmpty()){
+        if (null != info && !info.isEmpty()) {
             map.put("info", info);
         }
         User login_user = (User) request.getSession().getAttribute("login");
@@ -40,8 +41,18 @@ public class UserEviCorController {
 
     // 退回关联处理
     @RequestMapping("/user_return_correlation")
-    public String to_user_return_correlation() {
+    public String to_user_return_correlation(HashMap<String, Object> map, HttpServletRequest request) {
+        User login_user = (User) request.getSession().getAttribute("login");
+        List<ForRejectConnect> info = evidenceService.GetAllUserEvi(login_user.getUsername(), 2);
+        map.put("info", info);
+        map.put("infocount", info.size());
         return "user/user_return_correlation";
+    }
+
+    @PostMapping("/user_update_return_eviinfo")
+    public String to_user_update_return_eviinfo(Evidence evidence, String caseid, String cunote){
+        System.out.println(evidence + "," + caseid + "," +cunote);
+        return "redirect:/user_pending_cor_maintain";
     }
 
     // 申请解除关联
