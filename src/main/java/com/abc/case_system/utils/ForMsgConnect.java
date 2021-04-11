@@ -21,7 +21,11 @@ public class ForMsgConnect {
         for (String s : arr) {
             if (s.equals(eid + "," + replace_old)) {
                 flag += 1;
-                str_temp.append(eid + ","+ replace_new + ",,");
+                if ("".equals(replace_new)){
+                    str_temp.append(replace_new);
+                }else{
+                    str_temp.append(eid + ","+ replace_new + ",,");
+                }
             }else{
                 str_temp.append(s + ",,");
             }

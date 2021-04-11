@@ -49,9 +49,10 @@ public class UserEviCorController {
         return "user/user_return_correlation";
     }
 
+    //退回关联修改并关联
     @PostMapping("/user_update_return_eviinfo")
     public String to_user_update_return_eviinfo(Evidence evidence, String caseid, String cunote){
-        System.out.println(evidence + "," + caseid + "," +cunote);
+        evidenceService.UpdateRejectEvi(evidence, caseid, cunote);
         return "redirect:/user_pending_cor_maintain";
     }
 
@@ -59,6 +60,13 @@ public class UserEviCorController {
     @RequestMapping("/user_apply_for_disconnect")
     public String to_user_apply_for_disconnect() {
         return "user/user_apply_for_disconnect";
+    }
+
+    // 解除关联
+    @PostMapping("/user_disconnect")
+    public String to_user_disconnect(String caseid, Integer eid){
+        evidenceService.DisConnect(eid, caseid);
+        return "redirect:/user_return_correlation";
     }
 
 

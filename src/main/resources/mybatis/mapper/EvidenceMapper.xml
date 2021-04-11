@@ -27,4 +27,7 @@
 				select * from `evidence` where `eidversion`=#{eidversion}
 		</select>
 
+    <update id="UpdateEviEstatus">
+            update `evidence` set `estatus`=#{estatus} where `eidversion`=#{eidversion}
+    </update>
 </mapper>

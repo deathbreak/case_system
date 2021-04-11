@@ -75,9 +75,14 @@ public class EvidenceService {
     }
 
     //修改退回关联的证据信息
-    public void UpdateRejectEvi(Evidence evidence){
-        evidence.setElasttime(TimeInfo.get_now_time());
-        evidenceMapper.UpdateUrlNoteLastTimeByKey(evidence);
+    public void UpdateRejectEvi(Evidence evidence, String caseid, String cunote) {
+        ForMsgConnect forMsgConnect = IsReplaceStrTrue(caseid, evidence.getEidversion(), "c", "b");
+        if (forMsgConnect.getFlag()) {
+            caseMapper.UpdateCaseEvidence(caseid, forMsgConnect.getStr());
+            connecttipMapper.UpdateConnectByEid(0, "", cunote, evidence.getEidversion());
+            evidence.setElasttime(TimeInfo.get_now_time());
+            evidenceMapper.UpdateUrlNoteLastTimeByKey(evidence);
+        }
     }
 
     public int CountByCstatus(int cstatus) {
@@ -97,13 +102,12 @@ public class EvidenceService {
     }
 
     /*
-    *   管理员审核关联证据状态及信息变更   这里Boolean是为了判定并发环境下的查了被修改的问题,然后加了个synchronized避免了这种情况,
-    *                         使得这个Boolean没了意义,但是高并发的环境下 synchronized 会影响处理速度,还是要删掉了使用
-    *                          Boolean来判定,但是这个项目不会出现高并发的情况所以就用了 锁synchronized
-    */
+     *   管理员审核关联证据状态及信息变更   这里Boolean是为了判定并发环境下的查了被修改的问题,然后加了个synchronized避免了这种情况,
+     *                         使得这个Boolean没了意义,但是高并发的环境下 synchronized 会影响处理速度,还是要删掉了使用
+     *                          Boolean来判定,但是这个项目不会出现高并发的情况所以就用了 锁synchronized
+     */
     public synchronized Boolean UpdateEviConnect(Integer eid, String caseid, Integer update_status, String canote, String cunote, String replace_old, String replace_new) {
-        String str_ = caseMapper.GetCaseconnect(caseid);
-        ForMsgConnect forMsgConnect = ForMsgConnect.Update_connect(eid, replace_old, replace_new, str_);
+        ForMsgConnect forMsgConnect = IsReplaceStrTrue(caseid, eid, replace_old, replace_new);
         if (forMsgConnect.getFlag()) {
             caseMapper.UpdateCaseEvidence(caseid, forMsgConnect.getStr());
             connecttipMapper.UpdateConnectByEid(update_status, canote, cunote, eid);
@@ -114,7 +118,23 @@ public class EvidenceService {
     }
 
     // 查询用户被退回的证据关联信息
-    public List<ForRejectConnect> GetAllUserEvi(String cuser, int cstatus){
+    public List<ForRejectConnect> GetAllUserEvi(String cuser, int cstatus) {
         return connecttipMapper.GetUserConEvi(cuser, cstatus);
+    }
+
+    //解除关联
+    public void DisConnect(Integer eid, String caseid) {
+        int check_status = connecttipMapper.GetStatusByEid(eid);
+        if (check_status == 2) {
+            ForMsgConnect forMsgConnect = IsReplaceStrTrue(caseid, eid, "c", "");
+            caseMapper.UpdateCaseEvidence(caseid, forMsgConnect.getStr());
+            connecttipMapper.UpdateConnectByEid(4, "", "", eid);
+            evidenceMapper.UpdateEviEstatus(eid, 0);
+        }
+    }
+
+    public ForMsgConnect IsReplaceStrTrue(String caseid, Integer eid, String replace_old, String replace_new) {
+        String str_ = caseMapper.GetCaseconnect(caseid);
+        return ForMsgConnect.Update_connect(eid, replace_old, replace_new, str_);
     }
 }
