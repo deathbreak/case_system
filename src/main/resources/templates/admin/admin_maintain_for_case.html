@@ -24,10 +24,17 @@
 
     <footer th:replace="~{common/nav_admin :: admin_footer}"></footer>
 </div>
+
+<input type="hidden" id="msg" th:value="${msg}"/>
+
 <script type="text/javascript">
     $(function () {
         $("#admin_d").addClass("layui-nav-itemed");
         $("#admin_d1").addClass("layui-this");
+        var msg = $("#msg").val();
+        if(msg == "0") {
+            layer.msg("没有搜索到匹配的信息");
+        }
     });
     layui.use('element', function () {
         // var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块

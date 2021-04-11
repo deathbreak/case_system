@@ -12,15 +12,28 @@
     <footer th:replace="~{common/nav_admin :: admin_side_nav}"></footer>
 
     <div class="layui-body">
-        <div style="padding: 15px;">历史关联维护</div>
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+            <legend>历史已关联的证据</legend>
+        </fieldset>
+        <form th:action="@{/admin_maintain_for_history_association}" class="admin-index-search" method="post">
+            <div class="layui-inline">
+                <input placeholder="输入证据对应的案件编号" name="query" autocomplete="off" value class="layui-input for-search">
+            </div><button class="layui-btn for-search-btn"><i class="layui-icon layui-icon-search"></i></button>
+        </form>
     </div>
 
     <footer th:replace="~{common/nav_admin :: admin_footer}"></footer>
 </div>
+
+<input type="hidden" id="msg" th:value="${msg}"/>
 <script type="text/javascript">
     $(function () {
         $("#admin_b").addClass("layui-nav-itemed");
         $("#admin_b2").addClass("layui-this");
+        var msg = $("#msg").val();
+        if(msg == "0") {
+            layer.msg("没有搜索到匹配的信息");
+        }
     });
     layui.use('element', function () {
         // var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块

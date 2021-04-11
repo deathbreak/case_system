@@ -30,4 +30,6 @@ public interface ConnecttipMapper {
         void UpdateConnectByEid(@Param("cstatus") int cstatus,@Param("canote") String canote,@Param("cunote") String cunote, @Param("eid") int eid);
 
         List<ForRejectConnect> GetUserConEvi(String cuser, int cstatus);
+
+        List<Connecttip> GetConnectByStatusCaseId(int cstatus, String caseid);
 }

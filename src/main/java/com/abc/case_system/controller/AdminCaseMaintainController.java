@@ -29,8 +29,7 @@ public class AdminCaseMaintainController {
         List<Case> case_query = caseService.GetCaseByQuery(query);
         if (case_query == null){
             map.put("msg", 0);
-            map.put("query", query);
-            return "admin/admin_maintain_query";
+            return "admin/admin_maintain_for_case";
         }else {
             map.put("msg", case_query.size());
             map.put("query_result", case_query);

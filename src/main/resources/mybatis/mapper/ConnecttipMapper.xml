@@ -35,6 +35,10 @@
             select  * from connecttip where `cstatus` = #{cstatus} and `cuser`=#{cuser}
         </select>
 
+    <select id="GetConnectByStatusCaseId" resultType="Connecttip">
+            select  * from connecttip where `cstatus` = #{cstatus} and `caseid`=#{caseid}
+        </select>
+
     <update id="UpdateConnectByEid">
 			update `connecttip` set `cstatus`=#{cstatus},`canote`=#{canote},`cunote`=#{cunote} where `eid`=#{eid}
 			</update>

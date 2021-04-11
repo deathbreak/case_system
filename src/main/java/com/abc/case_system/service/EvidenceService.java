@@ -137,4 +137,13 @@ public class EvidenceService {
         String str_ = caseMapper.GetCaseconnect(caseid);
         return ForMsgConnect.Update_connect(eid, replace_old, replace_new, str_);
     }
+
+    public List<Connecttip> GetConByQueryCaseid(String query) {
+        if ("".equals(query) || null == query) {
+            return connecttipMapper.GetConnectByStatus(1);
+        } else {
+            List<Connecttip> check = connecttipMapper.GetConnectByStatusCaseId(1, query);
+            return check.size() == 0 ? null : check;
+        }
+    }
 }

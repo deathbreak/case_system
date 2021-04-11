@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <title>iframe</title>
+    <footer th:replace="~{common/nav_admin :: admin_head}"></footer>
+
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-row layui-col-space15">
+
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header" th:utext="${'<b>案件信息:</b>'+ caseinfo.casename}"></div>
+                <div class="layui-card-body">
+                    <div th:utext="${'<b>案件编号:</b>'+ caseinfo.caseid}"></div>
+                    <div th:utext="${'<b>案件发生时间:</b>'+ caseinfo.casetime}"></div>
+                    <div th:utext="${'<b>案件内容:</b>'+ caseinfo.caseinfo}"></div>
+                    <div th:utext="${'<b>案件关联人:</b>'+ caseinfo.casepeople}"></div>
+                    <div>
+                        <b>案件状态:</b>
+                        <input type="radio" th:checked="${caseinfo.casestatus == 0}" disabled>侦查
+                        <input type="radio" th:checked="${caseinfo.casestatus == 1}" disabled>结案
+                        <input type="radio" th:checked="${caseinfo.casestatus == 2}" disabled>销案
+                    </div>
+                    <div th:utext="${'<b>案件审理记录:</b>  '+ caseinfo.casenote}"></div>
+                    <div th:utext="${'<b>案件关联证据:</b>  '+ caseinfo.caseconnect}"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-col-md6">
+            <div class="layui-card">
+
+                <div class="layui-card-header" th:utext="${'<b>证据编号:</b>'+ eviinfo.eid}">标题</div>
+                <div class="layui-card-body">
+                    <div th:utext="${'<b>证据录入时间:</b>'+ eviinfo.etime}"></div>
+                    <div th:utext="${'<b>最后修改时间:</b>'+ eviinfo.elasttime}"></div>
+                    <div th:utext="${'<b>关联案件编号:</b>'+ eviinfo.ecaseid}"></div>
+                    <div th:utext="${'<b>证据内容:</b>'+ eviinfo.eurl}"></div>
+                    <div th:utext="${'<b>证据版本历史:</b>'+ eviinfo.ehistory}"></div>
+                    <div th:utext="${'<b>备注:</b>'+ eviinfo.enote}"></div>
+                    <div th:utext="${'<b>提交证据的用户:</b>'+ eviinfo.euser}"></div>
+                    <div>
+                        <b>证据使用状态:</b>
+                        <input type="radio" th:checked="${eviinfo.eupdate == 0}" disabled>待审批
+                        <input type="radio" th:checked="${eviinfo.eupdate == 1}" disabled>使用中
+                        <input type="radio" th:checked="${eviinfo.eupdate == 2}" disabled>被拒绝
+                    </div>
+                    <b class="layui-inline">证据有效:</b><div class="layui-inline" th:utext="${eviinfo.estatus == 1 ? '是':'否'}"></div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="layui-row layui-col-space15">
+        <button class="layui-btn layui-btn-radius layui-btn-danger layui-col-md-offset10" id="btn_2" type="button">拒绝关联</button>
+    </div>
+</div>
+
+
+<form id="connect_false" th:action="@{/admin_connect2_false}" method="POST">
+    <input type="hidden" name="caseid" th:value="${eviinfo.ecaseid}">
+    <input type="hidden" name="eid" th:value="${eviinfo.eidversion}">
+    <input type="hidden" name="msg" value="" id="_msg">
+</form>
+<script type="text/javascript">
+    layui.use('layer', function () {
+
+    });
+
+    $("#btn_2").click(function () {
+        layer.prompt({title: '拒绝关联,请给用户写明原因', formType: 2}, function(text, index){
+            layer.close(index);
+            $("#_msg").val(text);
+            $("#connect_false").submit();
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+        });
+    });
+</script>
+</body>
+</html>
