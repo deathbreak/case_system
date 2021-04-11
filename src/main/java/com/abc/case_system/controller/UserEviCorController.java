@@ -1,8 +1,10 @@
 package com.abc.case_system.controller;
 
+import com.abc.case_system.bean.Connecttip;
 import com.abc.case_system.bean.Evidence;
 import com.abc.case_system.bean.ForRejectConnect;
 import com.abc.case_system.bean.User;
+import com.abc.case_system.service.CaseService;
 import com.abc.case_system.service.EvidenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,9 @@ import java.util.List;
 public class UserEviCorController {
     @Autowired
     EvidenceService evidenceService;
+
+    @Autowired
+    CaseService caseService;
 
 
     // 待关联证据维护
@@ -58,7 +63,11 @@ public class UserEviCorController {
 
     // 申请解除关联
     @RequestMapping("/user_apply_for_disconnect")
-    public String to_user_apply_for_disconnect() {
+    public String to_user_apply_for_disconnect(HashMap<String, Object> map, HttpServletRequest request) {
+        User login_user = (User) request.getSession().getAttribute("login");
+        List<Connecttip> result = evidenceService.GetUserConByStatus(1, login_user.getUsername());
+        map.put("msg", result.size());
+        map.put("result", result);
         return "user/user_apply_for_disconnect";
     }
 
@@ -69,5 +78,17 @@ public class UserEviCorController {
         return "redirect:/user_return_correlation";
     }
 
+    @RequestMapping("/user_connect_iframe")
+    public String to_user_connect_iframe(String cid, Integer eid, HashMap<String, Object> map){
+        map.put("caseinfo", caseService.GetCaseByCaseId(cid));
+        map.put("eviinfo", evidenceService.GetEviByEidversion(eid));
+        return "user/user_connect_iframe";
+    }
+
+    @PostMapping("/user_disconnect_true")
+    public String user_disconnect_true(String caseid, Integer eid, String msg){
+        evidenceService.UpdateEviConnect(eid, caseid, 0, "", msg, "a", "b");
+        return "redirect:/user_pending_cor_maintain";
+    }
 
 }

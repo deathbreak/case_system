@@ -146,4 +146,8 @@ public class EvidenceService {
             return check.size() == 0 ? null : check;
         }
     }
+
+    public List<Connecttip> GetUserConByStatus(int status, String username){
+        return connecttipMapper.GetConnectByStatusUser(status, username);
+    }
 }

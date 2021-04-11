@@ -44,16 +44,16 @@
 
 <script type="text/javascript">
     $(function () {
-        $(function () {
-            $("#admin_b").addClass("layui-nav-itemed");
-            $("#admin_b2").addClass("layui-this");
-        });
+        $("#admin_b").addClass("layui-nav-itemed");
+        $("#admin_b2").addClass("layui-this");
         var msg = $("#msg").val();
-        if(msg == "0") {
+        if (msg == "0") {
             layer.msg("没有搜索到匹配的信息");
         }
     });
-    layui.use('element', function () {});
+
+    layui.use('element', function () {
+    });
 
 
     $(".layui-btn.layui-btn-normal.layui-btn-sm").click(function () {
