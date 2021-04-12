@@ -47,4 +47,8 @@
             select `connecttip`.cstatus,`connecttip`.cuser,`connecttip`.caseid,`connecttip`.eid,`connecttip`.canote,`connecttip`.cunote,`evidence`.eurl,`evidence`.enote from  `connecttip` left join `evidence` on `connecttip`.eid = `evidence`.eidversion where `connecttip`.cuser = #{cuser} and `connecttip`.cstatus = #{cstatus}
         </select>
 
+    <select id="CountByEid" resultType="java.lang.Integer">
+            select count(*) from `connecttip` where `eid`=#{eid}
+        </select>
+
 </mapper>

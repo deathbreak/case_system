@@ -147,7 +147,11 @@ public class EvidenceService {
         }
     }
 
-    public List<Connecttip> GetUserConByStatus(int status, String username){
+    public List<Connecttip> GetUserConByStatus(int status, String username) {
         return connecttipMapper.GetConnectByStatusUser(status, username);
+    }
+
+    public Boolean IsExistEid(int eid) {
+        return connecttipMapper.CountByEid(eid) == 1 ? true : false;
     }
 }

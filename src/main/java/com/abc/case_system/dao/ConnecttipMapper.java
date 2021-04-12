@@ -32,4 +32,6 @@ public interface ConnecttipMapper {
         List<ForRejectConnect> GetUserConEvi(String cuser, int cstatus);
 
         List<Connecttip> GetConnectByStatusCaseId(int cstatus, String caseid);
+
+        int CountByEid(int eid);
 }

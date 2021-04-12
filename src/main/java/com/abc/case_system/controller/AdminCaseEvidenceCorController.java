@@ -24,14 +24,14 @@ public class AdminCaseEvidenceCorController {
     // 处理关联
     @RequestMapping("/admin_processing_association")
     public String to_admin_processing_association(HashMap<String, Object> map) {
-        map.put("countall",evidenceService.CountByCstatus(0));
-        map.put("allconnect",evidenceService.GetConnectByCstatus(0));
+        map.put("countall", evidenceService.CountByCstatus(0));
+        map.put("allconnect", evidenceService.GetConnectByCstatus(0));
         return "admin/admin_processing_association";
     }
 
     //iframe数据
     @RequestMapping("/admin_connect_iframe")
-    public String to_admin_connect_iframe(String cid, Integer eid, HashMap<String, Object> map){
+    public String to_admin_connect_iframe(String cid, Integer eid, HashMap<String, Object> map) {
         map.put("caseinfo", caseService.GetCaseByCaseId(cid));
         map.put("eviinfo", evidenceService.GetEviByEidversion(eid));
         return "admin/admin_connect_iframe";
@@ -39,7 +39,7 @@ public class AdminCaseEvidenceCorController {
 
     //iframe数据
     @RequestMapping("/admin_connect_iframe2")
-    public String to_admin_connect_iframe2(String cid, Integer eid, HashMap<String, Object> map){
+    public String to_admin_connect_iframe2(String cid, Integer eid, HashMap<String, Object> map) {
         map.put("caseinfo", caseService.GetCaseByCaseId(cid));
         map.put("eviinfo", evidenceService.GetEviByEidversion(eid));
         return "admin/admin_connect_iframe2";
@@ -47,27 +47,29 @@ public class AdminCaseEvidenceCorController {
 
     //待处理证据确定关联
     @PostMapping("/admin_connect_true")
-    public String to_admin_connect_true(String caseid, Integer eid){
-        evidenceService.UpdateEviConnect(eid, caseid, 1,"","","b","a");
+    public String to_admin_connect_true(String caseid, Integer eid) {
+        evidenceService.UpdateEviConnect(eid, caseid, 1, "", "", "b", "a");
         return "redirect:/admin_processing_association";
     }
 
     //待处理证据拒绝关联
     @PostMapping("/admin_connect_false")
-    public String to_admin_connect_false(String caseid, Integer eid, String msg){
-        evidenceService.UpdateEviConnect(eid, caseid,2, msg,"","b","c");
+    public String to_admin_connect_false(String caseid, Integer eid, String msg) {
+        evidenceService.UpdateEviConnect(eid, caseid, 2, msg, "", "b", "c");
         return "redirect:/admin_processing_association";
     }
 
     //历史维护证据拒绝关联
     @PostMapping("/admin_connect2_false")
-    public String to_admin_connect2_false(String caseid, Integer eid, String msg){
-        evidenceService.UpdateEviConnect(eid, caseid,2, msg,"","a","c");
+    public String to_admin_connect2_false(String caseid, Integer eid, String msg) {
+        if (evidenceService.IsExistEid(eid)) {
+            evidenceService.UpdateEviConnect(eid, caseid, 2, msg, "", "a", "c");
+        }
         return "redirect:/admin_processing_association";
     }
 
     @GetMapping("/admin_maintain_for_history_association")
-    public String admin_maintain_for_history_association(){
+    public String admin_maintain_for_history_association() {
         return "admin/admin_maintain_for_history_association";
     }
 
@@ -75,10 +77,10 @@ public class AdminCaseEvidenceCorController {
     @PostMapping("/admin_maintain_for_history_association")
     public String to_admin_maintain_for_history_association(String query, HashMap<String, Object> map) {
         List<Connecttip> con_query = evidenceService.GetConByQueryCaseid(query);
-        if (null == con_query){
+        if (null == con_query) {
             map.put("msg", 0);
             return "admin/admin_maintain_for_history_association";
-        }else{
+        } else {
             map.put("msg", con_query.size());
             map.put("query_result", con_query);
             map.put("query", query);

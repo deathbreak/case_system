@@ -18,4 +18,6 @@ public class AdminEvidenceManageController {
     public String to_admin_check_for_user_maintain() {
         return "admin/admin_check_for_user_maintain";
     }
+
+
 }
