@@ -61,12 +61,30 @@
                 <input type="text" value="" id="_eid" class="layui-input" disabled>
             </div>
         </div>
-        <div class="layui-form-item">
+<!--        <div class="layui-form-item">-->
+<!--            <label class="layui-form-label">证据内容:</label>-->
+<!--            <div class="layui-input-block">-->
+<!--                <input type="text" value="" name="eurl" id="update_eurl" class="layui-input">-->
+<!--            </div>-->
+<!--        </div>-->
+
+        <div class="layui-form-item layui-col-md8">
             <label class="layui-form-label">证据内容:</label>
             <div class="layui-input-block">
-                <input type="text" value="" name="eurl" id="update_eurl" class="layui-input">
+                <input type="text" name="eurl" id="update_eurl"
+                       value="" placeholder="请上传文件"
+                       class="layui-input" readonly>
             </div>
         </div>
+        <div class="layui-inline layui-col-md4">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <button type="button" class="layui-btn" id="upload"><i class="layui-icon">&#xe67c;</i>上传文件</button>
+                    <button class="layui-btn layui-btn-danger" id="reset_upload" type="button">清除</button>
+                </div>
+            </div>
+        </div>
+
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">备注:</label>
             <div class="layui-input-block">
@@ -162,6 +180,31 @@
             return true;
         }
     };
+
+
+    layui.use('upload', function(){
+        var upload = layui.upload;
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#upload' //绑定元素
+            ,url: '/file/upload' //上传接口
+            ,accept: 'file'
+            ,done: function(res){
+                //上传完毕回调
+                layer.msg(res.msg)
+                $("#update_eurl").val(res.url)
+            }
+            ,error: function(res_){
+                //请求异常回调
+                layer.msg(res_.msg)
+            }
+        });
+    });
+
+    $("#reset_upload").click(function () {
+        $("#update_eurl").val("");
+    });
 </script>
 </body>
 </html>

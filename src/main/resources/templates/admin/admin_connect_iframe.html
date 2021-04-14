@@ -38,7 +38,7 @@
                     <div th:utext="${'<b>证据录入时间:</b>'+ eviinfo.etime}"></div>
                     <div th:utext="${'<b>最后修改时间:</b>'+ eviinfo.elasttime}"></div>
                     <div th:utext="${'<b>关联案件编号:</b>'+ eviinfo.ecaseid}"></div>
-                    <div th:utext="${'<b>证据内容:</b>'+ eviinfo.eurl}"></div>
+                    <div th:utext="${'<b>证据内容:</b>'+ '<a class=' + 'layui-bg-blue' +' target='+ '_blank' + ' href=' + eviinfo.eurl + '>证据链接点击查看</a>'}"></div>
                     <div th:utext="${'<b>证据版本历史:</b>'+ eviinfo.ehistory}"></div>
                     <div th:utext="${'<b>备注:</b>'+ eviinfo.enote}"></div>
                     <div th:utext="${'<b>提交证据的用户:</b>'+ eviinfo.euser}"></div>
