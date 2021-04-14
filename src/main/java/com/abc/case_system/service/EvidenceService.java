@@ -34,7 +34,7 @@ public class EvidenceService {
         evidence.setEid(evidence.getEcaseid() + evidence.getEidversion());
         evidence.setEhistory(evidence.getEidversion() + "");
         evidenceMapper.UpdateEidHisByKey(evidence);
-        connecttipMapper.AddNewConnect(0, evidence.getEuser(), evidence.getEcaseid(), evidence.getEidversion());
+        connecttipMapper.AddNewConnect(0, evidence.getEuser(), evidence.getEcaseid(), evidence.getEidversion(), evidence.getEid());
         String caseconnect_check = caseMapper.QueryCaseconnectByCaseid(evidence.getEcaseid());
         caseMapper.UpdateCaseEvidence(evidence.getEcaseid(), (!"".equals(caseconnect_check) && null != caseconnect_check) ? caseconnect_check + evidence.getEidversion() + ",b,," : evidence.getEidversion() + ",b,,");
     }
@@ -44,9 +44,9 @@ public class EvidenceService {
         return evidenceMapper.CountEvidenceByTimeIdNote(evidence) > 0 ? true : false;
     }
 
-    // 查询待关联的该用户证据数量
-    public int CountConnectBySubmitUser(String username) {
-        return connecttipMapper.CountConnectByUser(0, username);
+    // 通过状态查询该用户证据数量
+    public int CountConnectBySubmitUser(int cstatus, String username) {
+        return connecttipMapper.CountConnectByUser(cstatus, username);
     }
 
     // 查询待关联的该用户证据信息

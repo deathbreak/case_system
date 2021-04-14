@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface ConnecttipMapper {
-        void AddNewConnect(@Param("cstatus") int cstatus, @Param("euser") String euser, @Param("ecaseid") String ecaseid, @Param("eid") int eid);
+        void AddNewConnect(@Param("cstatus") int cstatus, @Param("euser") String euser, @Param("ecaseid") String ecaseid, @Param("eid") int eid, @Param("ceid") String ceid);
 
         int CountConnectByUser(@Param("cstatus")int cstatus, @Param("cuser") String user);
 

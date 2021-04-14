@@ -12,15 +12,48 @@
     <footer th:replace="~{common/nav_user :: user_side_nav}"></footer>
 
     <div class="layui-body">
-        <div style="padding: 15px;">录入证据管理</div>
+
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+            <legend>已录入的关联证据信息</legend>
+        </fieldset>
+
+        <div style="margin:20px;" th:if="${msg != 0}">
+            <table class="layui-table">
+                <tr class="layui-table-header">
+                    <th>提交的用户</th>
+                    <th>关联的案件编号</th>
+                    <th>证据版本</th>
+                    <th>证据编号</th>
+                    <th>操作</th>
+                </tr>
+                <tr th:each="con : ${info}">
+                    <td th:text="${con.cuser}">1</td>
+                    <td th:text="${con.caseid}">3</td>
+                    <td th:text="${con.eid}">4</td>
+                    <td th:text="${con.ceid}">2</td>
+                    <td>
+                        <button class="layui-btn layui-btn-danger layui-btn-sm">修改</button>
+                        <button class="layui-btn layui-btn-normal layui-btn-sm">已有的修改版本</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
     </div>
 
     <footer th:replace="~{common/nav_user :: user_footer}"></footer>
 </div>
+
+
+<input type="hidden" id="msg" th:value="${msg}"/>
 <script type="text/javascript">
     $(function () {
         $("#user_c").addClass("layui-nav-itemed");
         $("#user_c1").addClass("layui-this");
+        var msg = $("#msg").val();
+        if (msg == "0") {
+            layer.msg("该用户没有已关联的录入证据信息");
+        }
     });
     layui.use('element', function () {
         // var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块

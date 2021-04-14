@@ -32,7 +32,7 @@ public class UserEviCorController {
             map.put("info", info);
         }
         User login_user = (User) request.getSession().getAttribute("login");
-        map.put("msg", evidenceService.CountConnectBySubmitUser(login_user.getUsername()));
+        map.put("msg", evidenceService.CountConnectBySubmitUser(0, login_user.getUsername()));
         map.put("eviinfo", evidenceService.GetAllUserPendingConnectEvidence(login_user.getUsername()));
         return "user/user_pending_cor_maintain";
     }
@@ -74,7 +74,9 @@ public class UserEviCorController {
     // 解除关联
     @PostMapping("/user_disconnect")
     public String to_user_disconnect(String caseid, Integer eid){
-        evidenceService.DisConnect(eid, caseid);
+        if (evidenceService.IsExistEid(eid)) {
+            evidenceService.DisConnect(eid, caseid);
+        }
         return "redirect:/user_return_correlation";
     }
 

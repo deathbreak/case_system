@@ -59,9 +59,10 @@ ENGINE=InnoDB DEFAULT CHARSET=utf8;
      `cstatus`  int        0/1/2/3/4    未处理/已处理/申请拒绝/申请解除关联/解除关联
      `cuser`    varchar(60)      提交关联的用户
      `caseid`   varchar(200)     要关联的案件编号
-     `eid`      int     要进行关联的证据eidversion最新版本   主键
+     `eid`      int     要进行关联的证据eidversion最新版本   不是主键,但是在数据库中的表现也和主键一样唯一
      `canote`   varchar(1200)    管理员留言
      `cunote`   varchar(1200)    用户留言
+     `ceid`     varchar(100)     对应evidence中的eid   主键
 
 证据表
    evidence:
