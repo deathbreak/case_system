@@ -51,4 +51,10 @@
             select count(*) from `connecttip` where `eid`=#{eid}
         </select>
 
+    <select id="GetEidByCeid" resultType="java.lang.Integer">
+            select `eid` from `connecttip` where `ceid`=#{ceid}
+        </select>
+
+
+
 </mapper>

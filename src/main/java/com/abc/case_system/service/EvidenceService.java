@@ -154,4 +154,18 @@ public class EvidenceService {
     public Boolean IsExistEid(int eid) {
         return connecttipMapper.CountByEid(eid) == 1 ? true : false;
     }
+
+    // 判断是否有多个修改版本
+    public Boolean IsMoreEidVersion(String eid) {
+        return evidenceMapper.CountEviByNotEupdateOne(eid) > 0 ? true : false;
+    }
+
+    public Evidence GetEditEviByEid(String eid){
+        int eidversion = connecttipMapper.GetEidByCeid(eid);
+        if (IsMoreEidVersion(eid)){
+            return evidenceMapper.GetEviByEditEvi(eidversion, eid);
+        }else{
+            return evidenceMapper.GetEviByKey(eidversion);
+        }
+    }
 }

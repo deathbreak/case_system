@@ -34,4 +34,6 @@ public interface ConnecttipMapper {
         List<Connecttip> GetConnectByStatusCaseId(int cstatus, String caseid);
 
         int CountByEid(int eid);
+
+        int GetEidByCeid(String ceid);
 }

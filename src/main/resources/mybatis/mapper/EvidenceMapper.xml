@@ -7,6 +7,14 @@
             select count(*) from `evidence` where `etime`=#{etime} and `ecaseid`=#{ecaseid} and `enote`=#{enote}
         </select>
 
+    <select id="CountEviByNotEupdateOne" resultType="java.lang.Integer">
+            select count(*) from `evidence` where `eid`=#{eid} and `eupdate` &lt;&gt; 1
+        </select>
+
+    <select id="GetEviByEditEvi" resultType="Evidence">
+            select * from `evidence` where `eid`=#{eid} and `eidversion` &lt;&gt; #{eidversion} and `estatus`= 1
+        </select>
+
     <insert id="InsertEvidence" parameterType="Evidence">
         insert into
         `evidence`(`etime`,`elasttime`,`ecaseid`,`eurl`,`enote`,`euser`,`eupdate`,`estatus`)values(#{etime},#{elasttime},#{ecaseid},#{eurl},#{enote},#{euser},#{eupdate},#{estatus})

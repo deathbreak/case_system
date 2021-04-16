@@ -17,4 +17,8 @@ public interface EvidenceMapper {
     void UpdateUrlNoteLastTimeByKey(Evidence evidence);
 
     void UpdateEviEstatus(int eidversion, int estatus);
+
+    int CountEviByNotEupdateOne(String eid);
+
+    Evidence GetEviByEditEvi(int eidversion, String eid);
 }

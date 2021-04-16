@@ -27,10 +27,10 @@
                     <th>操作</th>
                 </tr>
                 <tr th:each="con : ${info}">
-                    <td th:text="${con.cuser}">1</td>
-                    <td th:text="${con.caseid}">3</td>
-                    <td th:text="${con.eid}">4</td>
-                    <td th:text="${con.ceid}">2</td>
+                    <td th:text="${con.cuser}">0</td>
+                    <td th:text="${con.caseid}">1</td>
+                    <td th:text="${con.eid}">2</td>
+                    <td th:text="${con.ceid}">3</td>
                     <td>
                         <button class="layui-btn layui-btn-danger layui-btn-sm">修改</button>
                         <button class="layui-btn layui-btn-normal layui-btn-sm">已有的修改版本</button>
@@ -42,6 +42,51 @@
     </div>
 
     <footer th:replace="~{common/nav_user :: user_footer}"></footer>
+</div>
+
+
+<div id="layer_open" style="display:none;">
+    <form class="layui-form" style="margin: 20px" th:action="@{/user_update_pending_eviinfo}" method="post">
+        <input type="hidden" name="eidversion" id="update_eid" value="">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">证据编号:</label>
+            <div class="layui-input-block">
+                <input type="text" value="" id="_eid" class="layui-input" disabled>
+            </div>
+        </div>
+
+
+
+        <div class="layui-form-item layui-col-md8">
+            <label class="layui-form-label">证据内容:</label>
+            <div class="layui-input-block">
+                <input type="text" name="eurl" id="update_eurl"
+                       value="" placeholder="请上传文件"
+                       class="layui-input" readonly>
+            </div>
+        </div>
+        <div class="layui-inline layui-col-md4">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <button type="button" class="layui-btn" id="upload"><i class="layui-icon">&#xe67c;</i>上传文件</button>
+                    <button class="layui-btn layui-btn-danger" id="reset_upload" type="button">清除</button>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注:</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入备注信息" name="enote" id="update_enote" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button class="layui-btn layui-btn-normal layui-col-md-offset11" type="submit">确认修改</button>
+        </div>
+    </form>
 </div>
 
 
@@ -63,6 +108,99 @@
     });
     layui.use('layer', function () {
 
+    });
+
+    layui.use(['form', 'layedit'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+    });
+
+    $(".layui-btn.layui-btn-danger.layui-btn-sm").click(function () {
+        var eid_ = $(this).parents("td").parents("tr").children("td").eq(3).text()
+        $.ajax({
+            url:'/user_check_more_eid',
+            type:'POST',
+            data:{eid:eid_},
+            success:function(res){
+                if(res==300){
+                    layer.open({
+                        type: 1,
+                        title: ['修改证据信息'],
+                        shadeClose: true,
+                        skin: 'layui-layer-rim', //加上边框
+                        area: ['80%', '65%'], //宽高
+                        content: $("#layer_open")
+                    });
+                    $.ajax({
+                        url:'/user_getevi_responsebody',
+                        type:'POST',
+                        data:{eid:eid_},
+                        success:function(res){
+                            $("#update_eid").val(res.eidversion);
+                            $("#_eid").val(res.eidversion);
+                            $("#update_eurl").val(res.eurl);
+                            $("#update_enote").val(res.enote)
+                        }
+                    });
+                    layui.form.render();
+                }else{
+                    // $(this).addClass("layui-btn-disabled");
+                    layer.msg("数据库中已存在一个修改了的版本,请点击后面的按钮")
+                }
+            }
+        });
+    });
+
+    $(".layui-btn.layui-btn-normal.layui-btn-sm").click(function () {
+        var eid_ = $(this).parents("td").parents("tr").children("td").eq(3).text()
+        $.ajax({
+            url:'/user_check_more_eid',
+            type:'POST',
+            data:{eid:eid_},
+            success:function(res){
+                if(res==200){
+                    layer.open({
+                        type: 1,
+                        title: ['修改证据信息'],
+                        shadeClose: true,
+                        skin: 'layui-layer-rim', //加上边框
+                        area: ['80%', '65%'], //宽高
+                        content: $("#layer_open")
+                    });
+                    $.ajax({
+                        url:'/user_getevi_responsebody',
+                        type:'POST',
+                        data:{eid:eid_},
+                        success:function(res){
+                            $("#update_eid").val(res.eidversion);
+                            $("#_eid").val(res.eidversion);
+                            $("#update_eurl").val(res.eurl);
+                            $("#update_enote").val(res.enote)
+                        }
+                    });
+                    layui.form.render();
+                }else{
+                    // $(this).addClass("layui-btn-disabled");
+                    layer.msg("数据库中不存在一个修改了的版本,请点击前面的按钮")
+                }
+            }
+        });
+    });
+
+
+
+
+    function valid_it(id) {
+        if ($(id).val().trim() == "" || $(id).val().length == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    };
+
+    $("#reset_upload").click(function () {
+        $("#update_eurl").val("");
     });
 </script>
 </body>
