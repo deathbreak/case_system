@@ -27,17 +27,34 @@ public class UserEvidenceMaintainController {
         return "user/user_maintain_for_input_evidence";
     }
 
+
+    // 检测是否有修改版本
     @ResponseBody
     @PostMapping("/user_check_more_eid")
-    public int user_check_more_eid(String eid){
-        return evidenceService.IsMoreEidVersion(eid)? 200:300;
+    public int user_check_more_eid(String eid) {
+        return evidenceService.IsMoreEidVersion(eid) ? 200 : 300;
     }
 
+    // 取得修改版本证据
     @ResponseBody
     @PostMapping("/user_getevi_responsebody")
-    public Evidence user_getevi_responsebody(String eid){
+    public Evidence user_getevi_responsebody(String eid) {
         return evidenceService.GetEditEviByEid(eid);
     }
+
+//    // 检测是否修改过
+//    @ResponseBody
+//    @PostMapping("/user_check_isedit")
+//    public int user_check_isedit(int eidversion, String eurl, String enote) {
+//        return evidenceService.IsEdit(eidversion, eurl, enote) ? 200 : 300;
+//    }
+
+    @PostMapping("/user_update_editevi")
+    public String user_update_editevi(int flag, Evidence evidence){
+        evidenceService.UpdateEditEvi(flag, evidence);
+        return "redirect:/user_maintain_for_input_evidence";
+    }
+
 
     // 退回维护处理
     @RequestMapping("/user_return_maintain_evidence")

@@ -46,8 +46,13 @@
 
 
 <div id="layer_open" style="display:none;">
-    <form class="layui-form" style="margin: 20px" th:action="@{/user_update_pending_eviinfo}" method="post">
+    <form class="layui-form" style="margin: 20px" th:action="@{/user_update_editevi}" method="post">
+        <input type="hidden" name="flag" id="flag" value="1">
+
         <input type="hidden" name="eidversion" id="update_eid" value="">
+        <input type="hidden" name="eid" id="eidinfo" value="">
+        <input type="hidden" id="check_url" value="" disabled>
+        <input type="hidden" id="check_note" value="" disabled>
 
         <div class="layui-form-item">
             <label class="layui-form-label">证据编号:</label>
@@ -55,7 +60,6 @@
                 <input type="text" value="" id="_eid" class="layui-input" disabled>
             </div>
         </div>
-
 
 
         <div class="layui-form-item layui-col-md8">
@@ -74,7 +78,6 @@
                 </div>
             </div>
         </div>
-
 
 
         <div class="layui-form-item layui-form-text">
@@ -117,13 +120,14 @@
     });
 
     $(".layui-btn.layui-btn-danger.layui-btn-sm").click(function () {
+        $("#flag").val(2);
         var eid_ = $(this).parents("td").parents("tr").children("td").eq(3).text()
         $.ajax({
-            url:'/user_check_more_eid',
-            type:'POST',
-            data:{eid:eid_},
-            success:function(res){
-                if(res==300){
+            url: '/user_check_more_eid',
+            type: 'POST',
+            data: {eid: eid_},
+            success: function (res) {
+                if (res == 300) {
                     layer.open({
                         type: 1,
                         title: ['修改证据信息'],
@@ -133,18 +137,21 @@
                         content: $("#layer_open")
                     });
                     $.ajax({
-                        url:'/user_getevi_responsebody',
-                        type:'POST',
-                        data:{eid:eid_},
-                        success:function(res){
+                        url: '/user_getevi_responsebody',
+                        type: 'POST',
+                        data: {eid: eid_},
+                        success: function (res) {
                             $("#update_eid").val(res.eidversion);
                             $("#_eid").val(res.eidversion);
                             $("#update_eurl").val(res.eurl);
                             $("#update_enote").val(res.enote)
+                            $("#check_url").val(res.eurl)
+                            $("#check_note").val(res.enote)
+                            $("#eidinfo").val(res.eid)
                         }
                     });
                     layui.form.render();
-                }else{
+                } else {
                     // $(this).addClass("layui-btn-disabled");
                     layer.msg("数据库中已存在一个修改了的版本,请点击后面的按钮")
                 }
@@ -153,13 +160,14 @@
     });
 
     $(".layui-btn.layui-btn-normal.layui-btn-sm").click(function () {
-        var eid_ = $(this).parents("td").parents("tr").children("td").eq(3).text()
+        $("#flag").val(1);
+        var eid_ = $(this).parents("td").parents("tr").children("td").eq(3).text();
         $.ajax({
-            url:'/user_check_more_eid',
-            type:'POST',
-            data:{eid:eid_},
-            success:function(res){
-                if(res==200){
+            url: '/user_check_more_eid',
+            type: 'POST',
+            data: {eid: eid_},
+            success: function (res) {
+                if (res == 200) {
                     layer.open({
                         type: 1,
                         title: ['修改证据信息'],
@@ -169,18 +177,21 @@
                         content: $("#layer_open")
                     });
                     $.ajax({
-                        url:'/user_getevi_responsebody',
-                        type:'POST',
-                        data:{eid:eid_},
-                        success:function(res){
+                        url: '/user_getevi_responsebody',
+                        type: 'POST',
+                        data: {eid: eid_},
+                        success: function (res) {
                             $("#update_eid").val(res.eidversion);
                             $("#_eid").val(res.eidversion);
                             $("#update_eurl").val(res.eurl);
-                            $("#update_enote").val(res.enote)
+                            $("#update_enote").val(res.enote);
+                            $("#check_url").val(res.eurl);
+                            $("#check_note").val(res.enote);
+                            $("#eidinfo").val(res.eid);
                         }
                     });
                     layui.form.render();
-                }else{
+                } else {
                     // $(this).addClass("layui-btn-disabled");
                     layer.msg("数据库中不存在一个修改了的版本,请点击前面的按钮")
                 }
@@ -189,6 +200,24 @@
     });
 
 
+    $(".layui-btn.layui-btn-normal.layui-col-md-offset11").click(function () {
+        if (valid_it("#update_eurl") && valid_it("#update_enote")) {
+            if ($("#update_eurl").val() == $("#check_url").val() && $("#update_enote").val() == $("#check_note").val()) {
+                layer.alert('并没有任何修改', {
+                    title: '错误提示',
+                });
+                return false;
+            } else {
+                return true;
+            }
+
+        } else {
+            layer.alert('录入的信息不允许有空', {
+                title: '错误提示',
+            });
+            return false;
+        }
+    });
 
 
     function valid_it(id) {
@@ -201,6 +230,27 @@
 
     $("#reset_upload").click(function () {
         $("#update_eurl").val("");
+    });
+
+
+    layui.use('upload', function(){
+        var upload = layui.upload;
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#upload' //绑定元素
+            ,url: '/file/upload' //上传接口
+            ,accept: 'file'
+            ,done: function(res){
+                //上传完毕回调
+                layer.msg(res.msg)
+                $("#update_eurl").val(res.url)
+            }
+            ,error: function(res_){
+                //请求异常回调
+                layer.msg(res_.msg)
+            }
+        });
     });
 </script>
 </body>

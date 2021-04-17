@@ -38,4 +38,9 @@
     <update id="UpdateEviEstatus">
             update `evidence` set `estatus`=#{estatus} where `eidversion`=#{eidversion}
     </update>
+
+    <insert id="InsertEditEvidence" parameterType="Evidence">
+        insert into
+        `evidence`(`eid`,`etime`,`elasttime`,`ecaseid`,`eurl`,`ehistory`,`enote`,`euser`,`eupdate`,`estatus`)values(#{eid},#{etime},#{elasttime},#{ecaseid},#{eurl},#{ehistory},#{enote},#{euser},#{eupdate},#{estatus})
+    </insert>
 </mapper>

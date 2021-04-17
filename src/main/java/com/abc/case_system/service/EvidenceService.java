@@ -160,12 +160,39 @@ public class EvidenceService {
         return evidenceMapper.CountEviByNotEupdateOne(eid) > 0 ? true : false;
     }
 
-    public Evidence GetEditEviByEid(String eid){
+    public Evidence GetEditEviByEid(String eid) {
         int eidversion = connecttipMapper.GetEidByCeid(eid);
-        if (IsMoreEidVersion(eid)){
+        if (IsMoreEidVersion(eid)) {
             return evidenceMapper.GetEviByEditEvi(eidversion, eid);
-        }else{
+        } else {
             return evidenceMapper.GetEviByKey(eidversion);
         }
     }
+
+//    // 废弃的方法  现在采用前端检测
+//    public Boolean IsEdit(int eidversion, String eurl, String enote) {
+//        Evidence evidence = evidenceMapper.GetEviByKey(eidversion);
+//        return !(evidence.getEurl().equals(eurl) && evidence.getEnote().equals(enote));
+//    }
+
+    public Boolean UpdateEditEvi(int flag, Evidence evidence){    //flag = 1 --> 已有修改   flag = 2 --> 没有
+        int check_eid = connecttipMapper.GetEidByCeid(evidence.getEid());
+        boolean check_ismore = IsMoreEidVersion(evidence.getEid());
+        if (flag == 1 && check_eid < evidence.getEidversion() && check_ismore) {
+            evidence.setElasttime(TimeInfo.get_now_time());
+            evidenceMapper.UpdateUrlNoteLastTimeByKey(evidence);
+            return true;
+        }
+        if (flag == 2 && !check_ismore){
+            Evidence evidence_insert = evidenceMapper.GetEviByKey(evidence.getEidversion());
+            evidence_insert.setElasttime(TimeInfo.get_now_time());
+            evidence_insert.setEupdate(0);
+            evidence_insert.setEurl(evidence.getEurl());
+            evidence_insert.setEnote(evidence.getEnote());
+            evidenceMapper.InsertEditEvidence(evidence_insert);
+            return true;
+        }
+        return false;
+    }
+
 }
