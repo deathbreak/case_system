@@ -3,6 +3,8 @@ package com.abc.case_system.dao;
 import com.abc.case_system.bean.Evidence;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface EvidenceMapper {
 
@@ -23,4 +25,6 @@ public interface EvidenceMapper {
     Evidence GetEviByEditEvi(int eidversion, String eid);
 
     void InsertEditEvidence(Evidence evidence);
+
+    List<Evidence> GetEviByEupdateEstatus(int eupdate, int estatus);
 }

@@ -12,15 +12,20 @@
     <footer th:replace="~{common/nav_admin :: admin_side_nav}"></footer>
 
     <div class="layui-body">
-        <div style="padding: 15px;">证据信息维护</div>
+
     </div>
 
     <footer th:replace="~{common/nav_admin :: admin_footer}"></footer>
 </div>
+
+
+
+<input type="hidden" id="msg" th:value="${msg}"/>
 <script type="text/javascript">
     $(function () {
         $("#admin_c").addClass("layui-nav-itemed");
-        $("#admin_c1").addClass("layui-this");
+        $("#admin_c2").addClass("layui-this");
+
     });
     layui.use('element', function () {
         // var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块

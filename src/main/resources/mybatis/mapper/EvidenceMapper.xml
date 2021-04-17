@@ -35,6 +35,10 @@
 				select * from `evidence` where `eidversion`=#{eidversion}
 		</select>
 
+    <select id="GetEviByEupdateEstatus" resultType="Evidence">
+				select * from `evidence` where `eupdate`=#{eupdate} and `estatus`=#{estatus}
+		</select>
+
     <update id="UpdateEviEstatus">
             update `evidence` set `estatus`=#{estatus} where `eidversion`=#{eidversion}
     </update>

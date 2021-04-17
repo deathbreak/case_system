@@ -195,4 +195,8 @@ public class EvidenceService {
         return false;
     }
 
+    public List<Evidence> GetEditEviByEupdateStat(int eupdate, int estatus){
+        return evidenceMapper.GetEviByEupdateEstatus(eupdate, estatus);
+    }
+
 }

@@ -42,7 +42,7 @@ public class UserEvidenceMaintainController {
         return evidenceService.GetEditEviByEid(eid);
     }
 
-//    // 检测是否修改过
+//    // 检测是否修改过  已废弃现使用前端检测
 //    @ResponseBody
 //    @PostMapping("/user_check_isedit")
 //    public int user_check_isedit(int eidversion, String eurl, String enote) {
