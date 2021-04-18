@@ -29,7 +29,14 @@
                                 <input type="radio" th:checked="${syscase.casestatus == 2}" disabled>销案
                             </div>
                             <div th:utext="${'<b>案件审理记录:</b>  '+ syscase.casenote}"></div>
-                            <div th:utext="${'<b>案件关联证据:</b>'+ syscase.caseconnect}"></div>
+
+<!--                            <div th:utext="${'<b>案件关联证据:</b>'+ syscase.caseconnect}"></div>-->
+
+                            <b>案件关联证据:</b>
+                            <button type="button" class="layui-btn layui-btn-normal layui-btn-xs layui-inline"
+                                    th:if="${syscase.caseconnect!=null}" th:value="${syscase.caseconnect}"
+                                    th:text="${#strings.replace(syscase.caseconnect, ',a', '-关联').replace(',b','-待关联').replace(',c','-拒绝关联')}"></button>
+
                             <div>
                                 <input type="hidden" th:value="${syscase.caseid}"/>
                                 <input type="hidden" th:value="${syscase.casetime}"/>
@@ -195,6 +202,22 @@
             return true;
         }
     };
+
+    $(".layui-btn.layui-btn-normal.layui-btn-xs.layui-inline").click(function () {
+        // layer.msg($(this).val());
+        var connect = $(this).val();
+        layer.open({
+            type: 2,
+            title: ['点击链接查看证据信息'],
+            skin: 'layui-layer-rim', //加上边框
+            shadeClose: true,
+            area: ['80%', '65%'], //宽高
+            content: '/admin_evi_iframe?connect=' + connect,
+            end: function () {
+                window.location.reload();
+            }
+        });
+    });
 </script>
 </body>
 </html>

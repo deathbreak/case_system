@@ -1,8 +1,10 @@
 package com.abc.case_system.controller;
 
 import com.abc.case_system.bean.Case;
+import com.abc.case_system.bean.Forurl;
 import com.abc.case_system.bean.User;
 import com.abc.case_system.service.CaseService;
+import com.abc.case_system.service.EvidenceService;
 import com.abc.case_system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,9 @@ public class LoginController {
 
     @Autowired
     CaseService caseService;
+
+    @Autowired
+    EvidenceService evidenceService;
 
     @GetMapping(value = {"/", "/login"})
     public String loginPage() {
@@ -96,7 +101,23 @@ public class LoginController {
         }
     }
 
+    //evi_iframe数据
+    @RequestMapping("/admin_evi_iframe")
+    public String admin_evi_iframe(String connect, HashMap<String, Object> map) {
+        List<Forurl> re = evidenceService.GetAllUrl(connect);
+        map.put("info", re);
+        map.put("msg", re.size());
+        return "admin/admin_evi_iframe";
+    }
 
+    //evi_iframe数据
+    @RequestMapping("/user_evi_iframe")
+    public String user_evi_iframe(String connect, HashMap<String, Object> map) {
+        List<Forurl> re = evidenceService.GetAllUrl(connect);
+        map.put("info", re);
+        map.put("msg", re.size());
+        return "user/user_evi_iframe";
+    }
 
 }
 

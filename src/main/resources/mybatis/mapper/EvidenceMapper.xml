@@ -76,5 +76,9 @@
         `evidence`(`eid`,`etime`,`elasttime`,`ecaseid`,`eurl`,`ehistory`,`enote`,`euser`,`eupdate`,`estatus`,`etext`)values(#{eid},#{etime},#{elasttime},#{ecaseid},#{eurl},#{ehistory},#{enote},#{euser},#{eupdate},#{estatus},#{etext})
     </insert>
 
+    <select id="GetUrlByKey" resultType="Forurl">
+				select `eidversion`,`eurl` from `evidence` where `eidversion`=#{eidversion}
+		</select>
+
 
 </mapper>

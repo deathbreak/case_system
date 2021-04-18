@@ -3,6 +3,7 @@ package com.abc.case_system.service;
 import com.abc.case_system.bean.Connecttip;
 import com.abc.case_system.bean.Evidence;
 import com.abc.case_system.bean.ForRejectConnect;
+import com.abc.case_system.bean.Forurl;
 import com.abc.case_system.dao.CaseMapper;
 import com.abc.case_system.dao.ConnecttipMapper;
 import com.abc.case_system.dao.EvidenceMapper;
@@ -255,5 +256,19 @@ public class EvidenceService {
 
     public List<Evidence> GetRejectEviInfo(String euser, int eupdate) {
         return evidenceMapper.GetRejectEvi(euser, eupdate);
+    }
+
+    public List<Forurl> GetAllUrl(String urlinfo){
+        List<Forurl> re = new ArrayList<>();
+        if("".equals(urlinfo) && null == urlinfo){
+            return re;
+        }else{
+            String[] arr = urlinfo.replace("a,,","").replace("b,,","").replace("c,,","").split(",");
+            for (String i : arr){
+                re.add(evidenceMapper.GetUrlByKey(Integer.parseInt(i)));
+            }
+            return re;
+        }
+//        GetUrlByKey
     }
 }

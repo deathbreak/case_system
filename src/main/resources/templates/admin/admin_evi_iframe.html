@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <title>iframe</title>
+    <footer th:replace="~{common/nav_admin :: admin_head}"></footer>
+
+</head>
+<body>
+
+<div class="layui-layout layui-layout-admin">
+<!--    <div class="layui-body">-->
+<!--        <fieldset class="layui-elem-field layui-field-title">-->
+<!--            <legend>点击链接查看证据信息</legend>-->
+<!--        </fieldset>-->
+
+        <div th:if="${msg != 0}">
+            <table class="layui-table">
+                <tr class="layui-table-header">
+                    <th>证据版本</th>
+                    <th>Url</th>
+                </tr>
+                <tr th:each="con : ${info}">
+                    <td th:text="${con.eidversion}"></td>
+                    <td><a target="_blank" th:href="${con.eurl}">点击链接查看证据信息</a></td>
+                </tr>
+            </table>
+        </div>
+
+<!--    </div>-->
+</div>
+
+</div>
+<script type="text/javascript">
+    layui.use('layer', function () {
+
+    });
+
+</script>
+</body>
+</html>

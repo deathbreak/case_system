@@ -1,6 +1,7 @@
 package com.abc.case_system.dao;
 
 import com.abc.case_system.bean.Evidence;
+import com.abc.case_system.bean.Forurl;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -39,6 +40,8 @@ public interface EvidenceMapper {
     List<Evidence> GetEviByEupdateEstatus(int eupdate, int estatus);
 
     String GetEidByKey(int eidversion);
+
+    Forurl GetUrlByKey(int eidversion);
 
     List<Evidence> GetRejectEvi(String euser, int eupdate);
 }
