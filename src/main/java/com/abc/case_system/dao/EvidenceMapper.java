@@ -30,6 +30,8 @@ public interface EvidenceMapper {
 
     int CountEviByNotEupdateOne(String eid);
 
+    int CountEviByEupdate2(String eid);
+
     Evidence GetEviByEditEvi(int eidversion, String eid);
 
     void InsertEditEvidence(Evidence evidence);

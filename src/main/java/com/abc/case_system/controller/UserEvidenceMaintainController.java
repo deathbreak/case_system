@@ -37,7 +37,7 @@ public class UserEvidenceMaintainController {
     @ResponseBody
     @PostMapping("/user_check_more_eid")
     public int user_check_more_eid(String eid) {
-        return evidenceService.IsMoreEidVersion(eid) ? 200 : 300;
+        return evidenceService.CheckIsMoreEidVersion(eid);
     }
 
     // 取得修改版本证据

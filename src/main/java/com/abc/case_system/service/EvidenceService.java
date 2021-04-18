@@ -172,6 +172,18 @@ public class EvidenceService {
         return evidenceMapper.CountEviByNotEupdateOne(eid) > 0 ? true : false;
     }
 
+    public int CheckIsMoreEidVersion(String eid){
+        if (IsMoreEidVersion(eid)){
+            if (evidenceMapper.CountEviByEupdate2(eid) > 0){
+                return 100;
+            }else {
+                return 200;
+            }
+        }else {
+            return 300;
+        }
+    }
+
     public Evidence GetEditEviByEid(String eid) {
         int eidversion = connecttipMapper.GetEidByCeid(eid);
         if (IsMoreEidVersion(eid)) {

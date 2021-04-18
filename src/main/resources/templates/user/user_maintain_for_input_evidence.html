@@ -177,7 +177,11 @@
             type: 'POST',
             data: {eid: eid_},
             success: function (res) {
-                if (res == 200) {
+                if (res == 100) {
+                    layer.alert('这个修改后的证据已经被管理员退回了,请在-退回维护处理-看留言点确认', {
+                        title: '错误提示',
+                    });
+                }else if (res == 200) {
                     layer.open({
                         type: 1,
                         title: ['修改证据信息'],
