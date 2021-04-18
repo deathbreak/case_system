@@ -180,7 +180,7 @@ public class EvidenceService {
         boolean check_ismore = IsMoreEidVersion(evidence.getEid());
         if (flag == 1 && check_eid < evidence.getEidversion() && check_ismore) {
             evidence.setElasttime(TimeInfo.get_now_time());
-            evidenceMapper.UpdateUrlNoteLastTimeByKey(evidence);
+            evidenceMapper.UpdateTextUrlNoteLastTimeByKey(evidence);
             return true;
         }
         if (flag == 2 && !check_ismore){

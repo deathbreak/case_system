@@ -15,12 +15,6 @@ public class AdminEvidenceManageController {
     @Autowired
     EvidenceService evidenceService;
 
-    // 证据信息维护
-    @RequestMapping("/admin_maintain_for_evidence")
-    public String to_admin_maintain_for_evidence() {
-        return "admin/admin_maintain_for_evidence";
-    }
-
     // 审批用户维护
     @RequestMapping("/admin_check_for_user_maintain")
     public String to_admin_check_for_user_maintain(HashMap<String, Object> map) {
@@ -29,6 +23,15 @@ public class AdminEvidenceManageController {
         map.put("msg", re.size());
         return "admin/admin_check_for_user_maintain";
     }
+
+
+    // 证据信息维护
+    @RequestMapping("/admin_maintain_for_evidence")
+    public String to_admin_maintain_for_evidence() {
+        return "admin/admin_maintain_for_evidence";
+    }
+
+
 
 
 }

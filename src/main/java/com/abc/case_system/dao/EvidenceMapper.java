@@ -18,6 +18,8 @@ public interface EvidenceMapper {
 
     void UpdateUrlNoteLastTimeByKey(Evidence evidence);
 
+    void UpdateTextUrlNoteLastTimeByKey(Evidence evidence);
+
     void UpdateEviEstatus(int eidversion, int estatus);
 
     int CountEviByNotEupdateOne(String eid);

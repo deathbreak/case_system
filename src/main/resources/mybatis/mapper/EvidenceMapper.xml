@@ -31,6 +31,10 @@
             update `evidence` set `eurl`=#{eurl},`enote`=#{enote},`elasttime`=#{elasttime} where `eidversion`=#{eidversion}
     </update>
 
+    <update id="UpdateTextUrlNoteLastTimeByKey" parameterType="Evidence">
+            update `evidence` set `eurl`=#{eurl},`enote`=#{enote},`elasttime`=#{elasttime},`etext`=#{etext} where `eidversion`=#{eidversion}
+    </update>
+
     <select id="GetEviByKey" resultType="Evidence">
 				select * from `evidence` where `eidversion`=#{eidversion}
 		</select>
@@ -45,6 +49,6 @@
 
     <insert id="InsertEditEvidence" parameterType="Evidence">
         insert into
-        `evidence`(`eid`,`etime`,`elasttime`,`ecaseid`,`eurl`,`ehistory`,`enote`,`euser`,`eupdate`,`estatus`)values(#{eid},#{etime},#{elasttime},#{ecaseid},#{eurl},#{ehistory},#{enote},#{euser},#{eupdate},#{estatus})
+        `evidence`(`eid`,`etime`,`elasttime`,`ecaseid`,`eurl`,`ehistory`,`enote`,`euser`,`eupdate`,`estatus`,`etext`)values(#{eid},#{etime},#{elasttime},#{ecaseid},#{eurl},#{ehistory},#{enote},#{euser},#{eupdate},#{estatus},#{etext})
     </insert>
 </mapper>

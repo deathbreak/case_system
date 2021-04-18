@@ -20,4 +20,5 @@ public class Evidence {           // 证据表
     private String euser;         // 操作用户信息
     private Integer eupdate;      // 0/1/2   被修改了没被管理员确定/使用中的证据版本/被管理员拒绝
     private Integer estatus;      // 证据状态   0/1    失效/有效
+    private String etext;         // 留言
 }

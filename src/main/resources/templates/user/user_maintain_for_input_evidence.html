@@ -53,6 +53,7 @@
         <input type="hidden" name="eid" id="eidinfo" value="">
         <input type="hidden" id="check_url" value="" disabled>
         <input type="hidden" id="check_note" value="" disabled>
+        <input type="hidden" id="check_text" value="" disabled>
 
         <div class="layui-form-item">
             <label class="layui-form-label">证据版本:</label>
@@ -84,6 +85,13 @@
             <label class="layui-form-label">备注:</label>
             <div class="layui-input-block">
                 <textarea placeholder="请输入备注信息" name="enote" id="update_enote" class="layui-textarea"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">给管理员留言:</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入留言" name="etext" id="update_etext" class="layui-textarea"></textarea>
             </div>
         </div>
         <div class="layui-form-item">
@@ -144,10 +152,12 @@
                             $("#update_eid").val(res.eidversion);
                             $("#_eid").val(res.eidversion);
                             $("#update_eurl").val(res.eurl);
-                            $("#update_enote").val(res.enote)
-                            $("#check_url").val(res.eurl)
-                            $("#check_note").val(res.enote)
-                            $("#eidinfo").val(res.eid)
+                            $("#update_enote").val(res.enote);
+                            $("#check_url").val(res.eurl);
+                            $("#check_note").val(res.enote);
+                            $("#eidinfo").val(res.eid);
+                            $("#update_etext").val(res.etext);
+                            $("#check_text").val(res.etext);
                         }
                     });
                     layui.form.render();
@@ -188,6 +198,8 @@
                             $("#check_url").val(res.eurl);
                             $("#check_note").val(res.enote);
                             $("#eidinfo").val(res.eid);
+                            $("#update_etext").val(res.etext);
+                            $("#check_text").val(res.etext);
                         }
                     });
                     layui.form.render();
@@ -201,8 +213,8 @@
 
 
     $(".layui-btn.layui-btn-normal.layui-col-md-offset11").click(function () {
-        if (valid_it("#update_eurl") && valid_it("#update_enote")) {
-            if ($("#update_eurl").val() == $("#check_url").val() && $("#update_enote").val() == $("#check_note").val()) {
+        if (valid_it("#update_eurl") && valid_it("#update_enote") && valid_it("#update_etext")) {
+            if ($("#update_eurl").val() == $("#check_url").val() && $("#update_enote").val() == $("#check_note").val() && $("#update_etext").val() == $("#check_text").val()) {
                 layer.alert('并没有任何修改', {
                     title: '错误提示',
                 });

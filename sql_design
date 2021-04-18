@@ -78,6 +78,7 @@ ENGINE=InnoDB DEFAULT CHARSET=utf8;
      `euser` varchar(50)         操作用户信息
      `eupdate`  int              0/1/2   被修改了没被管理员确定/使用中的证据版本/被管理员拒绝
      `estatus`   int             证据状态   0/1    失效/有效
+     `etext` varchar(2000)       留言
 
 
 
