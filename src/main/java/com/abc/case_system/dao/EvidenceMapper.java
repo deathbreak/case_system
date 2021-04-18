@@ -37,4 +37,6 @@ public interface EvidenceMapper {
     List<Evidence> GetEviByEupdateEstatus(int eupdate, int estatus);
 
     String GetEidByKey(int eidversion);
+
+    List<Evidence> GetRejectEvi(String euser, int eupdate);
 }

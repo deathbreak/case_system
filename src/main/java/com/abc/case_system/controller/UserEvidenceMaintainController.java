@@ -2,6 +2,7 @@ package com.abc.case_system.controller;
 
 import com.abc.case_system.bean.Evidence;
 import com.abc.case_system.bean.User;
+import com.abc.case_system.dao.EvidenceMapper;
 import com.abc.case_system.service.EvidenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,12 +12,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 
 @Controller
 public class UserEvidenceMaintainController {
 
     @Autowired
     EvidenceService evidenceService;
+
+    @Autowired
+    EvidenceMapper evidenceMapper;
 
     // 录入证据管理
     @RequestMapping("/user_maintain_for_input_evidence")
@@ -50,7 +55,7 @@ public class UserEvidenceMaintainController {
 //    }
 
     @PostMapping("/user_update_editevi")
-    public String user_update_editevi(int flag, Evidence evidence){
+    public String user_update_editevi(int flag, Evidence evidence) {
         evidenceService.UpdateEditEvi(flag, evidence);
         return "redirect:/user_maintain_for_input_evidence";
     }
@@ -58,7 +63,17 @@ public class UserEvidenceMaintainController {
 
     // 退回维护处理
     @RequestMapping("/user_return_maintain_evidence")
-    public String to_user_return_maintain_evidence() {
+    public String to_user_return_maintain_evidence(HashMap<String, Object> map, HttpServletRequest request) {
+        User login_user = (User) request.getSession().getAttribute("login");
+        List<Evidence> re = evidenceService.GetRejectEviInfo(login_user.getUsername(), 2);
+        map.put("msg", re.size());
+        map.put("info", re);
         return "user/user_return_maintain_evidence";
+    }
+
+    @PostMapping("/user_update_eupdate")
+    public String user_update_eupdate(int eid) {
+        evidenceMapper.UpdateEviEupdateEtext(eid, 0, "");
+        return "redirect:/user_maintain_for_input_evidence";
     }
 }

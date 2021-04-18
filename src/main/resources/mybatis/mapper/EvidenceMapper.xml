@@ -11,6 +11,10 @@
             select count(*) from `evidence` where `eid`=#{eid} and `eupdate` &lt;&gt; 1 and `estatus`= 1
         </select>
 
+    <select id="GetRejectEvi" resultType="Evidence">
+            select * from `evidence` where `euser`=#{euser} and `eupdate`=#{eupdate} and `estatus`= 1
+        </select>
+
     <select id="GetEviByEditEvi" resultType="Evidence">
             select * from `evidence` where `eid`=#{eid} and `eidversion` &lt;&gt; #{eidversion} and `estatus`= 1
         </select>
@@ -67,4 +71,6 @@
         insert into
         `evidence`(`eid`,`etime`,`elasttime`,`ecaseid`,`eurl`,`ehistory`,`enote`,`euser`,`eupdate`,`estatus`,`etext`)values(#{eid},#{etime},#{elasttime},#{ecaseid},#{eurl},#{ehistory},#{enote},#{euser},#{eupdate},#{estatus},#{etext})
     </insert>
+
+
 </mapper>

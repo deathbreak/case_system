@@ -156,11 +156,11 @@ public class EvidenceService {
         return connecttipMapper.CountByEid(eid) == 1 ? true : false;
     }
 
-    public void UpdateHistoryDisconnect(int eid, String caseid, String msg){
+    public void UpdateHistoryDisconnect(int eid, String caseid, String msg) {
         if (IsExistEid(eid)) {
             UpdateEviConnect(eid, caseid, 2, msg, "", "a", "c");
             String eid_ = evidenceMapper.GetEidByKey(eid);
-            if (IsMoreEidVersion(eid_)){
+            if (IsMoreEidVersion(eid_)) {
                 Evidence evidence = evidenceMapper.GetEviByEditEvi(eid, eid_);
                 evidenceMapper.UpdateEviEstatus(evidence.getEidversion(), 0);
             }
@@ -239,5 +239,9 @@ public class EvidenceService {
             String connect_edit = ForMsgConnect.Update_edit_connect(old_id, new_id, caseMapper.GetCaseconnect(caseid)).getStr();
             caseMapper.UpdateCaseEvidence(caseid, connect_edit);
         }
+    }
+
+    public List<Evidence> GetRejectEviInfo(String euser, int eupdate) {
+        return evidenceMapper.GetRejectEvi(euser, eupdate);
     }
 }
