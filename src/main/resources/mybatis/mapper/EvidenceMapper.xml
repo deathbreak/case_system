@@ -8,7 +8,7 @@
         </select>
 
     <select id="CountEviByNotEupdateOne" resultType="java.lang.Integer">
-            select count(*) from `evidence` where `eid`=#{eid} and `eupdate` &lt;&gt; 1
+            select count(*) from `evidence` where `eid`=#{eid} and `eupdate` &lt;&gt; 1 and `estatus`= 1
         </select>
 
     <select id="GetEviByEditEvi" resultType="Evidence">
@@ -27,6 +27,10 @@
             update `evidence` set `eid`=#{eid},`ehistory`=#{ehistory} where `eidversion`=#{eidversion}
     </update>
 
+    <update id="UpdateNewVersionEvi">
+            update `evidence` set `eupdate`=#{eupdate},`ehistory`=#{ehistory} where `eidversion`=#{eidversion}
+    </update>
+
     <update id="UpdateUrlNoteLastTimeByKey" parameterType="Evidence">
             update `evidence` set `eurl`=#{eurl},`enote`=#{enote},`elasttime`=#{elasttime} where `eidversion`=#{eidversion}
     </update>
@@ -43,8 +47,20 @@
 				select * from `evidence` where `eupdate`=#{eupdate} and `estatus`=#{estatus}
 		</select>
 
+    <select id="GetEupdateBykey" resultType="java.lang.Integer">
+				select `eupdate` from `evidence` where `eidversion`=#{eidversion}
+		</select>
+
+    <select id="GetEidByKey" resultType="java.lang.String">
+				select `eid` from `evidence` where `eidversion`=#{eidversion}
+		</select>
+
     <update id="UpdateEviEstatus">
             update `evidence` set `estatus`=#{estatus} where `eidversion`=#{eidversion}
+    </update>
+
+    <update id="UpdateEviEupdateEtext">
+            update `evidence` set `eupdate`=#{eupdate},`etext`=#{etext} where `eidversion`=#{eidversion}
     </update>
 
     <insert id="InsertEditEvidence" parameterType="Evidence">

@@ -36,4 +36,6 @@ public interface ConnecttipMapper {
         int CountByEid(int eid);
 
         int GetEidByCeid(String ceid);
+
+        void UpdateEditEviToConnect(int eid, String ceid);
 }

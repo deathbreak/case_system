@@ -41,14 +41,16 @@ public class AdminEvidenceManageController {
     }
 
     @PostMapping("/admin_editevi_true")   //确认
-    public String admin_editevi_true(String old_id, String new_id){
-        System.out.println(old_id + ",,," +new_id);
+    public String admin_editevi_true(int old_id, int new_id, String eid, String history, String caseid){
+//        System.out.println(old_id + ",,," +new_id + ",,," + caseid);
+        evidenceService.UpdatetrueEdit(old_id, new_id, eid, history, caseid);
         return "redirect:/admin_check_for_user_maintain";
     }
 
     @PostMapping("/admin_editevi_false")   //拒绝
-    public String admin_editevi_false(String old_id, String new_id, String msg){
-        System.out.println(old_id + ",,," +new_id + ",,," + msg);
+    public String admin_editevi_false(int old_id, int new_id, String msg){
+//        System.out.println(old_id + ",,," +new_id + ",,," + msg);
+        evidenceService.UpdatefalseEdit(new_id, msg);
         return "redirect:/admin_check_for_user_maintain";
     }
 

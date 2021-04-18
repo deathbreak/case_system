@@ -62,9 +62,7 @@ public class AdminCaseEvidenceCorController {
     //历史维护证据拒绝关联
     @PostMapping("/admin_connect2_false")
     public String to_admin_connect2_false(String caseid, Integer eid, String msg) {
-        if (evidenceService.IsExistEid(eid)) {
-            evidenceService.UpdateEviConnect(eid, caseid, 2, msg, "", "a", "c");
-        }
+        evidenceService.UpdateHistoryDisconnect(eid, caseid, msg);
         return "redirect:/admin_processing_association";
     }
 

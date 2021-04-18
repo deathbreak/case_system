@@ -22,6 +22,12 @@ public interface EvidenceMapper {
 
     void UpdateEviEstatus(int eidversion, int estatus);
 
+    void UpdateNewVersionEvi(int eidversion, int eupdate, String ehistory);
+
+    int GetEupdateBykey(int eidversion);
+
+    void UpdateEviEupdateEtext(int eidversion, int eupdate, String etext);
+
     int CountEviByNotEupdateOne(String eid);
 
     Evidence GetEviByEditEvi(int eidversion, String eid);
@@ -29,4 +35,6 @@ public interface EvidenceMapper {
     void InsertEditEvidence(Evidence evidence);
 
     List<Evidence> GetEviByEupdateEstatus(int eupdate, int estatus);
+
+    String GetEidByKey(int eidversion);
 }

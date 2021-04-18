@@ -51,7 +51,7 @@
         <div class="layui-col-md6">
             <div class="layui-card">
 
-                <div class="layui-card-header"><b>原证据编号:</b><p class="layui-inline" id="old_id"></p></div>
+                <div class="layui-card-header"><b>原证据版本:</b><p class="layui-inline" id="old_id"></p></div>
                 <div class="layui-card-body">
                     <div><b>证据录入时间:</b><p class="layui-inline" id="old_time"></p></div>
                     <div><b>最后修改时间:</b><p class="layui-inline" id="old_lasttime"></p></div>
@@ -68,7 +68,7 @@
         <div class="layui-col-md6">
             <div class="layui-card">
 
-                <div class="layui-card-header"><b>修改后的证据编号:</b><p class="layui-inline" id="new_id"></p></div>
+                <div class="layui-card-header"><b>修改后的证据版本:</b><p class="layui-inline" id="new_id"></p></div>
                 <div class="layui-card-body">
                     <div><b>证据录入时间:</b><p class="layui-inline" id="new_time"></p></div>
                     <div><b>最后修改时间:</b><p class="layui-inline" id="new_lasttime"></p></div>
@@ -95,6 +95,9 @@
 <form id="edit_true" th:action="@{/admin_editevi_true}" method="POST">
     <input type="hidden" name="old_id" id="edit_old_id" value="">
     <input type="hidden" name="new_id" id="edit_new_id" value="">
+    <input type="hidden" name="eid" id="edit_eid" value="">
+    <input type="hidden" name="caseid" id="edit_caseid" value="">
+    <input type="hidden" name="history" id="edit_history" value="">
 </form>
 
 <form id="edit_false" th:action="@{/admin_editevi_false}" method="POST">
@@ -163,6 +166,9 @@
 
                             $("#edit_old_id").val(res.eidversion);
                             $("#edit_old_id_false").val(res.eidversion);
+                            $("#edit_eid").val(res.eid);
+                            $("#edit_history").val(res.ehistory);
+                            $("#edit_caseid").val(res.ecaseid);
                         }
                     });
 

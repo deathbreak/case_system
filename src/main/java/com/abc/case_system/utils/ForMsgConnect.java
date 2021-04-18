@@ -32,5 +32,24 @@ public class ForMsgConnect {
         }
         return new ForMsgConnect(flag == 0? false:true, str_temp.toString());
     }
+
+    public static ForMsgConnect Update_edit_connect(int old_id, int new_id, String caseconnect){
+
+        StringBuffer str_temp = new StringBuffer();
+        String arr[] = caseconnect.split(",,");
+        int flag = 0;
+
+        for (String s : arr){
+            if (s.equals(old_id + ",a")){
+                flag += 1;
+                str_temp.append(new_id + ",a,,");
+            }else {
+                str_temp.append(s+",,");
+            }
+        }
+
+        if (flag == 0) throw new RuntimeException("证据信息被修改了~修改失败");
+        return new ForMsgConnect(true, str_temp.toString());
+    }
 }
 

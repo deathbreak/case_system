@@ -10,6 +10,7 @@ import com.abc.case_system.utils.ForMsgConnect;
 import com.abc.case_system.utils.TimeInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -155,6 +156,17 @@ public class EvidenceService {
         return connecttipMapper.CountByEid(eid) == 1 ? true : false;
     }
 
+    public void UpdateHistoryDisconnect(int eid, String caseid, String msg){
+        if (IsExistEid(eid)) {
+            UpdateEviConnect(eid, caseid, 2, msg, "", "a", "c");
+            String eid_ = evidenceMapper.GetEidByKey(eid);
+            if (IsMoreEidVersion(eid_)){
+                Evidence evidence = evidenceMapper.GetEviByEditEvi(eid, eid_);
+                evidenceMapper.UpdateEviEstatus(evidence.getEidversion(), 0);
+            }
+        }
+    }
+
     // 判断是否有多个修改版本
     public Boolean IsMoreEidVersion(String eid) {
         return evidenceMapper.CountEviByNotEupdateOne(eid) > 0 ? true : false;
@@ -175,7 +187,7 @@ public class EvidenceService {
 //        return !(evidence.getEurl().equals(eurl) && evidence.getEnote().equals(enote));
 //    }
 
-    public Boolean UpdateEditEvi(int flag, Evidence evidence){    //flag = 1 --> 已有修改   flag = 2 --> 没有
+    public Boolean UpdateEditEvi(int flag, Evidence evidence) {    //flag = 1 --> 已有修改   flag = 2 --> 没有
         int check_eid = connecttipMapper.GetEidByCeid(evidence.getEid());
         boolean check_ismore = IsMoreEidVersion(evidence.getEid());
         if (flag == 1 && check_eid < evidence.getEidversion() && check_ismore) {
@@ -183,7 +195,7 @@ public class EvidenceService {
             evidenceMapper.UpdateTextUrlNoteLastTimeByKey(evidence);
             return true;
         }
-        if (flag == 2 && !check_ismore){
+        if (flag == 2 && !check_ismore) {
             Evidence evidence_insert = evidenceMapper.GetEviByKey(evidence.getEidversion());
             evidence_insert.setElasttime(TimeInfo.get_now_time());
             evidence_insert.setEupdate(0);
@@ -195,18 +207,37 @@ public class EvidenceService {
         return false;
     }
 
-    public List<Evidence> GetEditEviByEupdateStat(int eupdate, int estatus){
+    public List<Evidence> GetEditEviByEupdateStat(int eupdate, int estatus) {
         return evidenceMapper.GetEviByEupdateEstatus(eupdate, estatus);
     }
 
     public Evidence GetAdminEditEvi(int flag, String info) {
-        if (flag == 1){
+        if (flag == 1) {
             int eidversion = connecttipMapper.GetEidByCeid(info);
             return evidenceMapper.GetEviByKey(eidversion);
         }
-        if (flag == 2){
+        if (flag == 2) {
             return evidenceMapper.GetEviByKey(Integer.parseInt(info));
         }
         return null;
+    }
+
+    // admin拒绝维护
+    public void UpdatefalseEdit(int id, String msg) {
+        if (evidenceMapper.GetEupdateBykey(id) == 0) {
+            evidenceMapper.UpdateEviEupdateEtext(id, 2, msg);
+        }
+    }
+
+    // admin确认维护
+    @Transactional
+    public void UpdatetrueEdit(int old_id, int new_id, String eid, String history, String caseid) {
+        if (evidenceMapper.GetEupdateBykey(new_id) == 0 && connecttipMapper.GetEidByCeid(eid) == old_id) {
+            connecttipMapper.UpdateEditEviToConnect(new_id, eid);
+            evidenceMapper.UpdateEviEstatus(old_id, 0);
+            evidenceMapper.UpdateNewVersionEvi(new_id, 1, history + "," + new_id);
+            String connect_edit = ForMsgConnect.Update_edit_connect(old_id, new_id, caseMapper.GetCaseconnect(caseid)).getStr();
+            caseMapper.UpdateCaseEvidence(caseid, connect_edit);
+        }
     }
 }

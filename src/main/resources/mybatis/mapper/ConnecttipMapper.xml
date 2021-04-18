@@ -55,6 +55,8 @@
             select `eid` from `connecttip` where `ceid`=#{ceid}
         </select>
 
-
+    <update id="UpdateEditEviToConnect">
+			update `connecttip` set `eid`=#{eid} where `ceid`=#{ceid}
+			</update>
 
 </mapper>
