@@ -199,4 +199,14 @@ public class EvidenceService {
         return evidenceMapper.GetEviByEupdateEstatus(eupdate, estatus);
     }
 
+    public Evidence GetAdminEditEvi(int flag, String info) {
+        if (flag == 1){
+            int eidversion = connecttipMapper.GetEidByCeid(info);
+            return evidenceMapper.GetEviByKey(eidversion);
+        }
+        if (flag == 2){
+            return evidenceMapper.GetEviByKey(Integer.parseInt(info));
+        }
+        return null;
+    }
 }

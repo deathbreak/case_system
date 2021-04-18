@@ -4,7 +4,9 @@ import com.abc.case_system.bean.Evidence;
 import com.abc.case_system.service.EvidenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +26,31 @@ public class AdminEvidenceManageController {
         return "admin/admin_check_for_user_maintain";
     }
 
+    // 检测是否有修改版本
+    @ResponseBody
+    @PostMapping("/admin_check_more_eid")
+    public int admin_check_more_eid(String eid) {
+        return evidenceService.IsMoreEidVersion(eid) ? 200 : 300;
+    }
+
+    // 取得修改以及原版本证据
+    @ResponseBody
+    @PostMapping("/admin_getevi_responsebody")
+    public Evidence admin_getevi_responsebody(int flag, String info) {
+        return evidenceService.GetAdminEditEvi(flag, info);
+    }
+
+    @PostMapping("/admin_editevi_true")   //确认
+    public String admin_editevi_true(String old_id, String new_id){
+        System.out.println(old_id + ",,," +new_id);
+        return "redirect:/admin_check_for_user_maintain";
+    }
+
+    @PostMapping("/admin_editevi_false")   //拒绝
+    public String admin_editevi_false(String old_id, String new_id, String msg){
+        System.out.println(old_id + ",,," +new_id + ",,," + msg);
+        return "redirect:/admin_check_for_user_maintain";
+    }
 
     // 证据信息维护
     @RequestMapping("/admin_maintain_for_evidence")

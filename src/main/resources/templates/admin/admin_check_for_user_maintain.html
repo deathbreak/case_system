@@ -44,6 +44,66 @@
 
     <footer th:replace="~{common/nav_admin :: admin_footer}"></footer>
 </div>
+
+<div id="layer_open" style="display:none;">
+    <div class="layui-row layui-col-space15">
+
+        <div class="layui-col-md6">
+            <div class="layui-card">
+
+                <div class="layui-card-header"><b>原证据编号:</b><p class="layui-inline" id="old_id"></p></div>
+                <div class="layui-card-body">
+                    <div><b>证据录入时间:</b><p class="layui-inline" id="old_time"></p></div>
+                    <div><b>最后修改时间:</b><p class="layui-inline" id="old_lasttime"></p></div>
+                    <div><b>关联案件编号:</b><p class="layui-inline" id="old_caseid"></p></div>
+                    <div><b>证据内容:</b><a class="layui-bg-blue" target="_blank" id="old_url">证据链接点击查看</a></div>
+                    <div><b>证据版本历史:</b><p class="layui-inline" id="old_history"></p></div>
+                    <div><b>备注:</b><p class="layui-inline" id="old_note"></p></div>
+                    <div><b>提交证据的用户:</b><p class="layui-inline" id="old_user"></p></div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="layui-col-md6">
+            <div class="layui-card">
+
+                <div class="layui-card-header"><b>修改后的证据编号:</b><p class="layui-inline" id="new_id"></p></div>
+                <div class="layui-card-body">
+                    <div><b>证据录入时间:</b><p class="layui-inline" id="new_time"></p></div>
+                    <div><b>最后修改时间:</b><p class="layui-inline" id="new_lasttime"></p></div>
+                    <div><b>关联案件编号:</b><p class="layui-inline" id="new_caseid"></p></div>
+                    <div><b>证据内容:</b><a class="layui-bg-blue" target="_blank" id="new_url">证据链接点击查看</a></div>
+                    <div><b>证据版本历史:</b><p class="layui-inline" id="new_history"></p></div>
+                    <div><b>备注:</b><p class="layui-inline" id="new_note"></p></div>
+                    <div><b>提交证据的用户:</b><p class="layui-inline" id="new_user"></p></div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="layui-row layui-col-space15">
+        <button class="layui-btn layui-btn-radius layui-btn-normal layui-col-md-offset10" id="btn_1" type="button">确认
+        </button>
+        <button class="layui-btn layui-btn-radius layui-btn-danger layui-col-md-offset10" id="btn_2" type="button">拒绝
+        </button>
+    </div>
+</div>
+
+<form id="edit_true" th:action="@{/admin_editevi_true}" method="POST">
+    <input type="hidden" name="old_id" id="edit_old_id" value="">
+    <input type="hidden" name="new_id" id="edit_new_id" value="">
+</form>
+
+<form id="edit_false" th:action="@{/admin_editevi_false}" method="POST">
+    <input type="hidden" name="old_id" id="edit_old_id_false" value="">
+    <input type="hidden" name="new_id" id="edit_new_id_false" value="">
+    <input type="hidden" name="msg" value="" id="_msg">
+</form>
+
+<input type="hidden" id="msg" th:value="${msg}"/>
 <script type="text/javascript">
     $(function () {
         $("#admin_c").addClass("layui-nav-itemed");
@@ -61,6 +121,97 @@
     });
     layui.use('layer', function () {
 
+    });
+
+    layui.use(['form', 'layedit'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+    });
+
+    $(".layui-btn.layui-btn-normal.layui-btn-sm").click(function () {
+        var eid = $(this).parents("td").parents("tr").children("td").eq(2).text();
+        var eidversion = $(this).parents("td").parents("tr").children("td").eq(3).text();
+        $.ajax({
+            url: '/admin_check_more_eid',
+            type: 'POST',
+            data: {eid: eid},
+            success: function (res) {
+                if (res == 200) {
+                    layer.open({
+                        type: 1,
+                        title: ['确认维护证据'],
+                        shadeClose: true,
+                        skin: 'layui-layer-rim', //加上边框
+                        area: ['80%', '65%'], //宽高
+                        content: $("#layer_open")
+                    });
+
+                    $.ajax({
+                        url: '/admin_getevi_responsebody',
+                        type: 'POST',
+                        data: {flag: 1, info: eid},  // 原版本
+                        success: function (res) {
+                            $("#old_id").text(res.eidversion);
+                            $("#old_time").text(res.etime);
+                            $("#old_lasttime").text(res.elasttime);
+                            $("#old_caseid").text(res.ecaseid);
+                            $("#old_url").attr('href',res.eurl);
+                            $("#old_history").text(res.ehistory);
+                            $("#old_note").text(res.enote);
+                            $("#old_user").text(res.euser);
+
+                            $("#edit_old_id").val(res.eidversion);
+                            $("#edit_old_id_false").val(res.eidversion);
+                        }
+                    });
+
+                    $.ajax({
+                        url: '/admin_getevi_responsebody',
+                        type: 'POST',
+                        data: {flag: 2, info: eidversion},  // 修改版本
+                        success: function (res) {
+                            $("#new_id").text(res.eidversion);
+                            $("#new_time").text(res.etime);
+                            $("#new_lasttime").text(res.elasttime);
+                            $("#new_caseid").text(res.ecaseid);
+                            $('#new_url').attr('href',res.eurl);
+                            $("#new_history").text(res.ehistory);
+                            $("#new_note").text(res.enote);
+                            $("#new_user").text(res.euser);
+
+                            $("#edit_new_id").val(res.eidversion);
+                            $("#edit_new_id_false").val(res.eidversion);
+
+                        }
+                    });
+
+                    layui.form.render();
+                } else {
+                    layer.alert('待维护证据已发生变化,请刷新页面!', {
+                        title: '错误提示',
+                    });
+                }
+            }
+        });
+
+
+    });
+
+
+    $("#btn_1").click(function () {
+        layer.confirm('批准这个维护信息吗?', {
+            btn: ['确认', '取消'] //按钮
+        }, function () {
+            $("#edit_true").submit();
+        }, function () {});
+    });
+
+    $("#btn_2").click(function () {
+        layer.prompt({title: '拒绝,请给用户写明原因', formType: 2}, function(text){
+            $("#_msg").val(text);
+            $("#edit_false").submit();
+        });
     });
 </script>
 </body>
