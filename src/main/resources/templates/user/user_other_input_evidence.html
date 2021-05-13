@@ -12,21 +12,165 @@
     <footer th:replace="~{common/nav_user :: user_side_nav}"></footer>
 
     <div class="layui-body">
-        <div style="padding: 15px;">渠道证据录入</div>
+
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+            <legend>其他渠道用户提供的证据</legend>
+        </fieldset>
+
+        <div style="margin:20px;" th:if="${msg != 0}">
+            <table class="layui-table">
+                <tr class="layui-table-header">
+                    <th>提交的用户</th>
+                    <th>联系方式</th>
+                    <th>提交时间</th>
+                    <th>备注</th>
+                    <th>证据内容</th>
+                    <th>操作</th>
+                </tr>
+                <tr th:each="con : ${info}">
+                    <td th:text="${con.submituser}">0</td>
+                    <td th:text="${con.telephone}">1</td>
+                    <td th:text="${con.datatime}">2</td>
+                    <td th:text="${con.note}">3</td>
+                    <td><a target="_blank" th:href="${con.url}">点击链接查看证据信息</a></td>
+                    <td>
+                        <input type="hidden" th:value="${con.datatime}"/>
+                        <input type="hidden" th:value="${con.caseinfo}"/>
+                        <input type="hidden" th:value="${con.telephone}"/>
+                        <input type="hidden" th:value="${con.submituser}"/>
+                        <input type="hidden" th:value="${con.url}"/>
+                        <input type="hidden" th:value="${con.note}"/>
+                        <input type="hidden" th:value="${con.status}"/>
+                        <input type="hidden" th:value="${con.checkstat}"/>
+                        <button class="layui-btn layui-btn-normal layui-btn-sm">查看详情</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+
     </div>
 
     <footer th:replace="~{common/nav_user :: user_footer}"></footer>
 </div>
+
+
+
+
+<div id="layer_open" style="display:none;">
+    <form class="layui-form" style="margin: 20px" th:action="@{/user_other_submit_info}" method="post">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">录入时间:</label>
+            <div class="layui-input-block">
+                <input type="text" value="" name="datatime" id="input_datatime" class="layui-input" readonly>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">对应案件的描述:</label>
+            <div class="layui-input-block">
+                        <textarea placeholder="请输入案件描述" name="caseinfo" id="input_caseinfo"
+                                  text=""
+                                  class="layui-textarea" readonly></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">联系方式:</label>
+            <div class="layui-input-block">
+                <input type="text" value="" name="telephone" id="input_telephone" class="layui-input" readonly>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">提交用户:</label>
+            <div class="layui-input-block">
+                <input type="text" value="" name="submituser" id="input_submituser" class="layui-input" readonly>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">Url:</label>
+            <div class="layui-input-block">
+                <input type="text" value="" name="url" id="input_url" class="layui-input" readonly>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">备注:</label>
+            <div class="layui-input-block">
+                <input type="text" value="" name="note" id="input_note" class="layui-input" readonly>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态:</label>
+            <div class="layui-input-block">
+                <input type="text" value="" name="status" id="input_status" class="layui-input" readonly>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">checkstat:</label>
+            <div class="layui-input-block">
+                <input type="text" value="" name="checkstat" id="input_checkstat" class="layui-input" readonly>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <button class="layui-btn layui-btn-normal layui-col-md-offset11" type="submit">确认提取证据信息</button>
+        </div>
+    </form>
+</div>
+
+
+
+
+
+<input type="hidden" id="msg" th:value="${msg}"/>
 <script type="text/javascript">
     $(function () {
         $("#user_d").addClass("layui-nav-itemed");
         $("#user_d1").addClass("layui-this");
+        var msg = $("#msg").val();
+        if (msg == "0") {
+            layer.msg("暂时还没有未被使用的提交证据");
+        }
     });
     layui.use('element', function () {
 
     });
     layui.use('layer', function () {
 
+    });
+    layui.use(['form', 'layedit'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+    });
+
+    $(".layui-btn.layui-btn-normal.layui-btn-sm").click(function () {
+        layer.open({
+            type: 1,
+            title: ['修改证据信息'],
+            shadeClose: true,
+            skin: 'layui-layer-rim', //加上边框
+            area: ['80%', '65%'], //宽高
+            content: $("#layer_open")
+        });
+
+        $("#input_datatime").val($(this).parents("td").children("input").eq(0).val());
+        $("#input_caseinfo").val($(this).parents("td").children("input").eq(1).val());
+        $("#input_telephone").val($(this).parents("td").children("input").eq(2).val());
+        $("#input_submituser").val($(this).parents("td").children("input").eq(3).val());
+        $("#input_url").val($(this).parents("td").children("input").eq(4).val());
+        $("#input_note").val($(this).parents("td").children("input").eq(5).val());
+        $("#input_status").val($(this).parents("td").children("input").eq(6).val());
+        $("#input_checkstat").val($(this).parents("td").children("input").eq(7).val());
+
+        layui.form.render();
     });
 </script>
 </body>

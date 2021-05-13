@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Web端用户证据信息提交</title>
+    <footer th:replace="~{common/nav_admin :: admin_head}"></footer>
+</head>
+<body>
+
+<div class="layui-layout layui-layout-admin">
+
+<div class="layui-tab">
+    <ul class="layui-tab-title">
+        <li class="layui-this">证据信息提交</li>
+        <li>提交的证据状态</li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+            <form class="layui-form" style="margin: 30px" th:action="@{/other_index}" method="post">
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">对应案件的描述:</label>
+                    <div class="layui-input-block">
+                        <textarea placeholder="请输入案件描述" name="caseinfo" id="input_caseinfo"
+                                  text=""
+                                  class="layui-textarea"></textarea>
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-col-md8">
+                    <label class="layui-form-label">证据内容:</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="url" id="input_url"
+                               value="" placeholder="请上传文件"
+                               class="layui-input" readonly>
+                    </div>
+                </div>
+                <div class="layui-inline layui-col-md4">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <button type="button" class="layui-btn" id="upload"><i class="layui-icon">&#xe67c;</i>上传文件
+                            </button>
+                            <button class="layui-btn layui-btn-danger" id="reset_upload" type="button">清除</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">联系方式:</label>
+                    <div class="layui-input-block">
+                        <input type="text" value="" name="telephone" id="input_telephone"
+                                autocomplete="off"
+                               placeholder="请输入联系方式" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">用户备注:</label>
+                    <div class="layui-input-block">
+                    <textarea placeholder="请输入内容" name="note" id="input_note"
+                              text=""
+                              class="layui-textarea"></textarea>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <button class="layui-btn layui-btn-normal abc" type="submit">提交</button>
+                </div>
+            </form>
+
+        </div>
+        <div class="layui-tab-item">
+            <div th:if="${infocount != 0}">
+                <table class="layui-table">
+                    <tr class="layui-table-header">
+                        <th>提交的时间</th>
+<!--                        <th>Url</th>-->
+                        <th>证据被使用状态</th>
+                    </tr>
+                    <tr th:each="con : ${info}">
+                        <td th:text="${con.datatime}"></td>
+<!--                        <td th:text="${con.url}"></td>-->
+                        <td th:text="${con.status == 0? '未被使用':'已被使用'}"></td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+</div>
+
+<input type="hidden" id="msg" th:value="${msg}"/>
+<script type="text/javascript">
+    $(function () {
+
+
+    });
+
+    layui.use('element', function () {
+
+    });
+
+    layui.use(['form', 'layedit'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit;
+        form.render();
+    });
+
+    $(".layui-btn.layui-btn-normal.abc").click(function () {
+        if (valid_it("#input_caseinfo") && valid_it("#input_url") && valid_it("#input_telephone") && valid_it("#input_note")) {
+            return true;
+        } else {
+            layer.alert('录入的信息不允许有空', {
+                title: '错误提示',
+            });
+            return false;
+        }
+    });
+
+    function valid_it(id) {
+        if ($(id).val().trim() == "" || $(id).val().length == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    };
+
+    layui.use('upload', function () {
+        var upload = layui.upload;
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#upload' //绑定元素
+            , url: '/file/upload' //上传接口
+            , accept: 'file'
+            , done: function (res) {
+                //上传完毕回调
+                layer.msg(res.msg)
+                $("#input_url").val(res.url)
+            }
+            , error: function (res_) {
+                //请求异常回调
+                layer.msg(res_.msg)
+            }
+        });
+    });
+
+    $("#reset_upload").click(function () {
+        $("#input_url").val("");
+    });
+
+</script>
+</body>
+</html>

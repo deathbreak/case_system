@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <title>Web端用户登录</title>
+    <footer th:replace="~{common/nav_admin :: admin_head}"></footer>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+
+</head>
+<body>
+<div class="layui-container">
+    <div class="admin-login-background">
+        <div class="layui-form login-form">
+            <form class="layui-form" action="#" th:action="@{/other_login}" method="post">
+                <div class="layui-form-item logo-title">
+                    <h1>Web端用户登录</h1>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-icon layui-icon-username" for="username"></label>
+                    <input type="text" id="username" name="username" value="" th:value="${user!=null?user.username:''}" lay-verify="required|account" placeholder="用户" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-icon layui-icon-password" for="password"></label>
+                    <input type="password" id="password" name="password" value="" th:value="${user!=null?user.password:''}" lay-verify="required|password" placeholder="密码" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-item">
+                    <button class="layui-btn layui-btn layui-btn-normal layui-btn-fluid" type="submit">登 录</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+<input type="hidden" id="msg" th:value="${msg}"/>
+<script type="text/javascript">
+    $(function () {
+        var msg = $("#msg").val();
+        if(msg != null && msg != "") {
+            layer.msg($("#msg").val());
+        }
+    });
+
+
+    layui.use(['form'], function () {
+        var form = layui.form,
+            layer = layui.layer;
+
+        // 登录过期的时候，跳出ifram框架
+        if (top.location != self.location) top.location = self.location;
+
+    });
+</script>
+</body>
+</html>

@@ -80,6 +80,23 @@ ENGINE=InnoDB DEFAULT CHARSET=utf8;
      `estatus`   int             证据状态   0/1    失效/有效
      `etext` varchar(2000)       留言
 
+手机web端用户表:
+    webuser:
+      `username`  varchar(100)
+      `password`  varchar(100)
+
+
+手机端web用户
+    webdata:
+       `datatime`     varchar(100)    录入时间
+       `caseinfo`     varchar(2000)   用户对证据关联的案件的详细描述
+       `telephone`    varchar(100)    联系方式
+       `submituser`   varchar(100)    提交的用户
+       `url`          varchar(2000)   提交的证据文件存放地址url
+       `note`         varchar(2000)   用户备注
+       `status`       int             0/1     用户提交的线索被使用的状态  0代表上传了但是还没被使用/ 1代表已经被使用了
+       `checkstat`    varchar(200)    检测用户被使用没有
+
 
 
 
